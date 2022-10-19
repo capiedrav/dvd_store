@@ -1,0 +1,56 @@
+version: "3.7"
+
+services:
+  dvd_store-web:
+    build: .
+
+    ports:
+      - "8000:8000"
+
+    volumes:
+      - .:/dvd_store
+
+    networks:
+      - app-net
+
+    depends_on:
+      - db
+
+    command: python /dvd_store/manage.py runserver 0.0.0.0:8000
+
+  db:
+    image: db_dvd_store
+
+    ports:
+      - "3306:3306"
+
+    environment:
+      - "MYSQL_ROOT_PASSWORD=unodostres"
+
+    volumes:
+      - mysql_volume:/var/lib/mysql
+
+    networks:
+      - app-net
+
+  phpmyadmin:
+    image: phpmyadmin
+    ports:
+      - "8080:80"
+    environment:
+      - "PMA_HOST=db"
+    networks:
+      - app-net
+
+    depends_on:
+      - db
+
+volumes:
+  mysql_volume:
+    external: true
+
+networks:
+  app-net:
+    external:
+      name: nat
+
