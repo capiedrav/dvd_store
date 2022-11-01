@@ -1,6 +1,16 @@
 from django.test import TestCase
 from django.contrib.auth import get_user_model
 
+"""
+Run these tests using:
+
+python manage.py test --settings=project_config.tests_settings
+
+to avoid errors with migrations during test database setup.
+
+Check project_config/tests_settings.py for more info.
+"""
+
 
 # Create your tests here.
 class CustomUserTests(TestCase):
