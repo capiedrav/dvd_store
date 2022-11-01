@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
-
+import os.path
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     "accounts_app.apps.AccountsAppConfig",
     "store_app.apps.StoreAppConfig",
     "movies_app.apps.MoviesAppConfig",
+    "pages_app.apps.PagesAppConfig",
+
 ]
 
 MIDDLEWARE = [
@@ -59,7 +61,7 @@ ROOT_URLCONF = 'project_config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, "templates"), ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
