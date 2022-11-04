@@ -4,4 +4,14 @@
 
 {% block content %}
     <h1>DVD Store</h1>
+    {% if user.is_authenticated %}
+        <p>Hello, {{ user.username }}</p>
+        <p><a href="{% url 'auth:logout' %}">Log Out</a></p>
+    {% else %}
+        <p>
+            You are not log in, <a href="{% url 'auth:login' %}">Log In</a><br>
+            <a href="{% url 'accounts_app:signup' %}">Sign Up</a>
+        </p>
+
+    {% endif %}
 {% endblock content %}
