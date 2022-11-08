@@ -6,6 +6,8 @@ name = "pypi"
 [packages]
 django = "==3.2.13"
 mysqlclient = "*"
+bing-image-downloader = "*"
+django-crispy-forms = "==1.9.2"
 
 [dev-packages]
 

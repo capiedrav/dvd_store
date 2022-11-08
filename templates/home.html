@@ -1,9 +1,12 @@
 {% extends "base.html" %}
+{% load static %}
+
 
 {% block title %}Home{% endblock title %}
 
 {% block content %}
     <h1>DVD Store</h1>
+    <img class="dvd_store_logo" src="{% static 'images/dvd-store-vector.jpg' %}">
     {% if user.is_authenticated %}
         <p>Hello, {{ user.username }}</p>
         <p><a href="{% url 'auth:logout' %}">Log Out</a></p>
