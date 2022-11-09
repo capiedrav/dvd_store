@@ -1,8 +1,7 @@
 from django.test import TestCase
 from django.contrib.auth import get_user_model
-from django.urls import reverse, resolve
-from .forms import CustomUserCreationForm
-from .views import SignupPageView
+from django.urls import reverse
+
 
 """
 Run these tests using:
@@ -68,25 +67,13 @@ class SignupPageTests(TestCase):
 
     def setUp(self):
 
-        url = reverse("accounts_app:signup")
+        url = reverse("account_signup")
         self.response = self.client.get(url)
 
     def test_sign_up_template(self):
 
         self.assertEquals(self.response.status_code, 200)
-        self.assertTemplateUsed(self.response, "registration/signup.html")
+        self.assertTemplateUsed(self.response, "account/signup.html")
         self.assertContains(self.response, "Sign Up")
         self.assertNotContains(self.response, "Sign In")
 
-    def test_signup_form(self):
-
-        form = self.response.context.get("form")
-
-        self.assertIsInstance(form, CustomUserCreationForm)
-        self.assertContains(self.response, "csrfmiddlewaretoken")
-
-    def test_signup_view(self):
-
-        view = resolve("/accounts/signup/")
-
-        self.assertEquals(view.func.__name__, SignupPageView.as_view().__name__)

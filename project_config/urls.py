@@ -20,12 +20,10 @@ urlpatterns = [
     # url for the admin site
     path('admin/', admin.site.urls),
 
-    # urls for user authentication using Django's auth app
-    path("accounts/", include(("django.contrib.auth.urls", "auth"), namespace="auth")),
+    # urls for user authentication using django-allauth app
+    path("accounts/", include("allauth.urls")),
 
     # urls for local apps
-    path("accounts/", include(("accounts_app.urls", "accounts_app"), namespace="accounts_app")), # note same endpoint
-                                                                                                 # as for auth app
     path("", include("pages_app.urls")),
 
 ]
