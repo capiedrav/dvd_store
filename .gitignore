@@ -281,4 +281,8 @@ fabric.properties
 # https://plugins.jetbrains.com/plugin/12206-codestream
 .idea/codestream.xml
 
+# ignore static files in movies_app (added by capiedrav)
+movies_app/static/
+
 # End of https://www.toptal.com/developers/gitignore/api/pycharm,django
+

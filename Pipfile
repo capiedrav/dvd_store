@@ -9,6 +9,7 @@ mysqlclient = "*"
 bing-image-downloader = "*"
 django-crispy-forms = "==1.9.2"
 django-allauth = "*"
+environs = {extras = ["django"], version = "*"}
 
 [dev-packages]
 
