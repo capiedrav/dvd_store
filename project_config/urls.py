@@ -24,6 +24,7 @@ urlpatterns = [
     path("accounts/", include("allauth.urls")),
 
     # urls for local apps
+    path("content/", include("movies_app.urls")),
     path("", include("pages_app.urls")),
 
 ]

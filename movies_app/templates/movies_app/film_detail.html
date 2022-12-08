@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load static %}
+{% load movies_app_filters_and_tags %}
+
+{% block title %}{{ film.title }}{% endblock title %}
+
+{% block content %}
+
+    <link rel="stylesheet" type="text/css" href="{% static 'movies_app/css/movies_app.css' %}">
+    <div>
+        <h2>{{ film.title }}</h2>
+        <img class="film_posters" src="{% static 'movies_app/images/film_posters/'|add:film.title|add:'/Image_1.jpg' %}" alt="{{film.title}}">
+        <p><span class="film_details">Description:</span> {{ film.description }}</p>
+        <p><span class="film_details">Release Year:</span> {{film.release_year}}</p>
+        <p><span class="film_details">Language:</span> {{ film.language }}</p>
+        {% if film.original_language %}
+            <p><span class="film_details">Original Language:</span> {{ film.original_language }}</p>
+        {% endif %}
+        <!-- format_film_length is a custom filter defined in movies_app_filters_and_tags in templatetags folder -->
+        <p><span class="film_details">Length:</span> {{ film.length|format_film_length }}</p>
+    </div>
+
+    <div class="all_actors">
+        <h3>Actors</h3>
+        {% for actor in all_actors %}
+            {% with full_name=actor.first_name|add:" "|add:actor.last_name %}
+                <a href="{{ actor.get_absolute_url }}">{{ full_name }}</a>
+            {% endwith %}
+        {% endfor %}
+    </div>
+
+{% endblock content %}

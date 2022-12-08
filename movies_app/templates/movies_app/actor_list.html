@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Actors{% endblock title %}
+
+{% block content %}
+    <h1>All Actors</h1>
+    <link rel="stylesheet" type="text/css" href="{% static 'movies_app/css/movies_app.css' %}">
+    {% for actor in actor_list %}
+        <div>
+            {% with full_name=actor.first_name|add:" "|add:actor.last_name %} <!-- full_name = actor.first_name + " " + actor.last_name -->
+                <a href="{{ actor.get_absolute_url }}">
+                    <img class="actor_images" src="{% static 'movies_app/images/actor_images/'|add:full_name|add:'/Image_1.jpg' %}" alt="{{ full_name }}">
+                </a>
+                <h3><a href="{{ actor.get_absolute_url }}">{{ full_name }}</a></h3>
+            {% endwith %}
+        </div>
+    {% endfor %}
+{% endblock content %}
+
+
