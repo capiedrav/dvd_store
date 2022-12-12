@@ -5,6 +5,7 @@ from django.urls import reverse
 
 
 class Language(models.Model):
+
     language_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=20)
     last_update = models.DateTimeField(auto_now=True)
@@ -18,7 +19,8 @@ class Language(models.Model):
 
 
 class Film(models.Model):
-    film_id = models.SmallAutoField(primary_key=True)
+
+    film_uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, null=False, unique=True)
     title = models.CharField(max_length=128)
     description = models.TextField(blank=True, null=True)
     release_year = models.TextField(blank=True, null=True)  # This field type is a guess.
@@ -41,10 +43,11 @@ class Film(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse("film_detail", args=[str(self.film_id), ])
+        return reverse("film_detail", args=[str(self.film_uuid), ])
 
 
 class Category(models.Model):
+
     category_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=25)
     last_update = models.DateTimeField(auto_now=True)
@@ -59,6 +62,7 @@ class Category(models.Model):
 
 
 class FilmText(models.Model):
+
     film_id = models.SmallIntegerField(primary_key=True)
     title = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
@@ -73,7 +77,8 @@ class FilmText(models.Model):
 
 
 class FilmCategory(models.Model):
-    film = models.OneToOneField(Film, on_delete=models.RESTRICT, primary_key=True)
+
+    film = models.OneToOneField(Film, primary_key=True, on_delete=models.RESTRICT, null=False)
     category = models.ForeignKey(Category, on_delete=models.RESTRICT)
     last_update = models.DateTimeField(auto_now=True)
 
@@ -88,8 +93,7 @@ class FilmCategory(models.Model):
 
 
 class Actor(models.Model):
-    # actor_id = models.SmallAutoField(primary_key=True)
-    actor_id = models.IntegerField()
+
     actor_uuid = models.UUIDField(unique=True, primary_key=True, editable=False, null=False, default=uuid.uuid4)
     first_name = models.CharField(max_length=45)
     last_name = models.CharField(max_length=45)
@@ -103,20 +107,19 @@ class Actor(models.Model):
         return self.first_name + " " + self.last_name
 
     def get_absolute_url(self):
-        return reverse("actor_detail", args=[str(self.actor_id), ])
+        return reverse("actor_detail", args=[str(self.actor_uuid), ])
 
 
 class FilmActor(models.Model):
-    # actor = models.OneToOneField(Actor, on_delete=models.RESTRICT, primary_key=True)
-    actor_new = models.OneToOneField(Actor, on_delete=models.RESTRICT, null=True)
-    actor = models.IntegerField(primary_key=True)
-    film = models.ForeignKey(Film, on_delete=models.RESTRICT)
+
+    actor = models.OneToOneField(Actor, primary_key=True, on_delete=models.RESTRICT, null=False)
+    film = models.ForeignKey(Film, on_delete=models.RESTRICT, null=False)
     last_update = models.DateTimeField(auto_now=True)
 
     class Meta:
         managed = True
         db_table = 'film_actor'
-        # unique_together = (('actor', 'film'),)
+        unique_together = (('actor', 'film'),)
         verbose_name_plural = "Film Actors"
 
     def __str__(self):

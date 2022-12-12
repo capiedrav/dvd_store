@@ -59,6 +59,7 @@ class Address(models.Model):
 
 
 class Store(models.Model):
+
     store_id = models.AutoField(primary_key=True)
     manager_staff = models.OneToOneField('Staff', null=True, related_name="in_charge_of_store",
                                          on_delete=models.RESTRICT)
@@ -109,7 +110,7 @@ class Customer(models.Model):
 class Inventory(models.Model):
 
     inventory_id = models.AutoField(primary_key=True)
-    film = models.ForeignKey(Film, on_delete=models.RESTRICT)
+    film = models.ForeignKey(Film, on_delete=models.RESTRICT, null=False)
     store = models.ForeignKey(Store, on_delete=models.RESTRICT)
     last_update = models.DateTimeField(auto_now=True)
 

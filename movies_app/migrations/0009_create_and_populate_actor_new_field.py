@@ -3,19 +3,30 @@
 from django.db import migrations, models
 import django.db.models.deletion
 
+"""
+The function populate_actor_new_field used for data migration never worked. Somehow it corrupted the data
+in FilmActor model.
 
-def populate_actor_new_field(apps, schema_editor):
+Data recovery was done using the following SQL statement:
 
-    Actor = apps.get_model("movies_app", "Actor")
-    FilmActor = apps.get_model("movies_app", "FilmActor")
+INSERT INTO sakila.film_actor (actor, film_id) SELECT actor_id, film_id FROM sakila_backup.film_actor;
 
-    # iterate over Actor and FilmActor model entries
-    for actor in Actor.objects.all():
-        for film_actor in FilmActor.objects.all():
-            if film_actor.actor == actor.actor_id: # if ids are the same
-                film_actor.actor_new = actor # update actor_new field
-                film_actor.save()
-                print(f"{film_actor.actor_new.actor_uuid}, {actor.actor_uuid}")
+Where sakila_backup is backup version of the original sakila database (it must be loaded in mysql).
+
+To populate the actor_new field the following SQL statement was used:
+
+UPDATE film_actor INNER JOIN actor on film_actor.actor = actor.actor_id SET film_actor.actor_new_id = actor.actor_uuid;
+"""
+
+# def populate_actor_new_field(apps, schema_editor):
+#
+#     Actor = apps.get_model("movies_app", "Actor")
+#     FilmActor = apps.get_model("movies_app", "FilmActor")
+#
+#     for film_actor in FilmActor.objects.all():
+#         film_actor.actor_new = Actor.objects.get(actor_id=film_actor.actor)
+#         print(film_actor.film_id, film_actor.actor_new)
+#         film_actor.save()
 
 
 class Migration(migrations.Migration):
@@ -25,10 +36,11 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        # migrations.AddField(
-        #     model_name='filmactor',
-        #     name='actor_new',
-        #     field=models.OneToOneField(null=True, on_delete=django.db.models.deletion.RESTRICT, to='movies_app.actor'),
-        # ),
-        migrations.RunPython(populate_actor_new_field, reverse_code=migrations.RunPython.noop),
+        migrations.AddField(
+            model_name='filmactor',
+            name='actor_new',
+            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.RESTRICT, to='movies_app.actor'),
+        ),
+        # this data migration never worked, see comments above
+        # migrations.RunPython(populate_actor_new_field, reverse_code=migrations.RunPython.noop),
     ]

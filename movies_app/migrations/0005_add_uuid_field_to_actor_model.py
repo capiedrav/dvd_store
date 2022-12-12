@@ -4,7 +4,7 @@ from django.db import migrations, models
 import uuid
 
 
-def create_actor_uuid(apps, schema_editor):
+def populate_actor_uuid(apps, schema_editor):
 
     Actor = apps.get_model("movies_app", "Actor")
 
@@ -44,7 +44,7 @@ class Migration(migrations.Migration):
         ),
 
         # populate actor_uuid field
-        migrations.RunPython(create_actor_uuid, reverse_code=migrations.RunPython.noop),
+        migrations.RunPython(populate_actor_uuid, reverse_code=migrations.RunPython.noop),
 
         # then change null field to false, to prevent new null entries in the database
         migrations.AlterField(

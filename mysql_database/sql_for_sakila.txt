@@ -1,0 +1,8 @@
+To fill-up film_actor table when corrupted:
+INSERT INTO sakila.film_actor (actor, film_id) SELECT actor_id, film_id FROM sakila_backup.film_actor;
+
+To populate film_actor table with foreign key from actor table:
+update film_actor INNER JOIN actor on film_actor.actor = actor.actor_id SET film_actor.actor_new_id = actor.actor_uuid;
+
+To populate film_actor table with foreign key from film table:
+UPDATE film_actor INNER JOIN film on film_actor.film_old = film.film_id SET film_actor.film_id = film.film_uuid;
