@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Payment info for {{payment.rental.inventory.film.title}} {% endblock title %}
+
+{% block content %}
+    <div class="container bg-light">
+        <div class="row">
+            <div class="col-lg">
+                <h2>Rental info for {{payment.rental.inventory.film.title}}</h2>
+                <p>
+                    <strong>Payment number: </strong>{{payment.payment_id}}<br>
+                    {% with customer_name=payment.customer.personal_info.first_name|add:" "|add:payment.customer.personal_info.last_name %}
+                        <strong>Rented by: </strong>{{customer_name}}<br>
+                    {% endwith %}
+                    <strong>customer id: </strong>{{payment.customer.personal_info.user_uuid}}<br>
+                    <strong>Rental number: </strong>{{payment.rental.rental_id}}<br>
+                    <strong>Rental rate: </strong>${{payment.amount}}<br>
+                    <strong>Rental date: </strong>{{payment.payment_date}}<br>
+                    <strong>Return date: </strong>{{payment.rental.return_date}}<br>
+                </p>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}

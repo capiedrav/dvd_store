@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load movies_app_filters_and_tags %}
 
 {% block title %}Films{% endblock title %}
 
@@ -7,12 +8,18 @@
     <link rel="stylesheet" type="text/css" href="{% static 'movies_app/css/movies_app.css' %}">
     <h1>All Films</h1>
     {% for film in film_list %}
-        <div>
-            <h3><a href="{{ film.get_absolute_url }}">{{ film.title }}</a></h3>
-            <a href="{{ film.get_absolute_url }}">
-            <img class="film_posters" src="{% static 'movies_app/images/film_posters/'|add:film.title|add:'/Image_1.jpg' %}" alt="{{film.title}}">
-            </a>
-            <p>Description: {{ film.description }}</p>
+        <div class="container">
+            <div class="row my-2">
+                <div class="col-lg-2">
+                    <a href="{{ film.get_absolute_url }}">
+                        <img class="film_posters" src="{% static 'movies_app/images/film_posters/'|add:film.title|add:'/Image_1.jpg' %}" alt="{{film.title}}">
+                    </a>
+                </div>
+                <div class="col-lg">
+                    <h3><a href="{{ film.get_absolute_url }}">{{ film.title }}</a></h3>
+                    <p>Description: {{ film.description }}</p>
+                </div>
+            </div>
         </div>
     {% endfor %}
 {% endblock content %}

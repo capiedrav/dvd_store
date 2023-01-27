@@ -149,7 +149,8 @@ LOGIN_REDIRECT_URL = "home" # go to home page after successful login
 
 CRISPY_TEMPLATE_PACK = "bootstrap4" # crispy-forms app setting
 
-# django-allauth settings
+# ***************************************** django-allauth settings **********************************
+
 SITE_ID = 1
 AUTHENTICATION_BACKENDS = (
     "django.contrib.auth.backends.ModelBackend", # default django auth backend
@@ -164,3 +165,6 @@ ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
 DEFAULT_FROM_EMAIL = "admin@dvdstore.com"
+ACCOUNT_FORMS = {
+    "signup": "accounts_app.forms.CustomSignupForm",
+}

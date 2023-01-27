@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Rental - {{ film.title }} {% endblock title %}
+
+{% block content %}
+  <link rel="stylesheet" type="text/css" href="{% static 'movies_app/css/movies_app.css' %}">
+
+  <div class="container bg-light">
+    <div class="row">
+      <div class="col-lg-2">
+        <img class="film_posters" src="{% static 'movies_app/images/film_posters/'|add:film.title|add:'/Image_1.jpg' %}" alt="{{film.title}}">
+      </div>
+      <div class="col-lg">
+        <h2>{{film.title}}</h2>
+        <p>
+          <span class="film_details">Description: </span>{{film.description}}<br>
+          <span class="film_details">Rating: </span>{{film.rating}}<br>
+          <span class="film_details">Release Year: </span>{{film.release_year}}<br>
+          <span class="film_details">Language: </span>{{film.language}}<br>
+          {% if film.original_language %}
+            <span class="film_details">Original language: </span>{{film.original_language}}
+          {% endif %}
+        </p>
+      </div>
+    </div>
+
+    <div class="row my-2">
+      <div class="col-lg">
+        {% if film_available %}
+          <p>Film is available for rental</p>
+          <p>
+            <span class="film_details">Rental rate: </span>{{film.rental_rate}}<br>
+            <span class="film_details">Rental duration: </span>{{film.rental_duration}} days<br>
+          </p>
+
+          <!-- This form consist of only the button that triggers the payment procedure -->
+          <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary">Rent</button>
+          </form>
+        {% else %}
+          <p>Film is not available for rental</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+{% endblock content %}

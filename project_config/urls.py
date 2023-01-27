@@ -25,6 +25,7 @@ urlpatterns = [
 
     # urls for local apps
     path("content/", include("movies_app.urls")),
+    path("store/", include("store_app.urls")),
     path("", include("pages_app.urls")),
 
 ]

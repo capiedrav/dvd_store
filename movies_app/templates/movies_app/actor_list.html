@@ -7,12 +7,16 @@
     <h1>All Actors</h1>
     <link rel="stylesheet" type="text/css" href="{% static 'movies_app/css/movies_app.css' %}">
     {% for actor in actor_list %}
-        <div>
+        <div class="container">
             {% with full_name=actor.first_name|add:" "|add:actor.last_name %} <!-- full_name = actor.first_name + " " + actor.last_name -->
-                <a href="{{ actor.get_absolute_url }}">
-                    <img class="actor_images" src="{% static 'movies_app/images/actor_images/'|add:full_name|add:'/Image_1.jpg' %}" alt="{{ full_name }}">
-                </a>
-                <h3><a href="{{ actor.get_absolute_url }}">{{ full_name }}</a></h3>
+                <div class="row my-2">
+                    <div class="col-lg">
+                        <a href="{{ actor.get_absolute_url }}">
+                            <img class="actor_images" src="{% static 'movies_app/images/actor_images/'|add:full_name|add:'/Image_1.jpg' %}" alt="{{ full_name }}">
+                        </a>
+                        <h3><a href="{{ actor.get_absolute_url }}">{{ full_name }}</a></h3>
+                    </div>
+                </div>
             {% endwith %}
         </div>
     {% endfor %}

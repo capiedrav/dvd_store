@@ -10,23 +10,40 @@
     <div>
         <h2>{{ film.title }}</h2>
         <img class="film_posters" src="{% static 'movies_app/images/film_posters/'|add:film.title|add:'/Image_1.jpg' %}" alt="{{film.title}}">
-        <p><span class="film_details">Description:</span> {{ film.description }}</p>
-        <p><span class="film_details">Release Year:</span> {{film.release_year}}</p>
-        <p><span class="film_details">Language:</span> {{ film.language }}</p>
-        {% if film.original_language %}
-            <p><span class="film_details">Original Language:</span> {{ film.original_language }}</p>
-        {% endif %}
+        <p>
+            <span class="film_details">Description:</span> {{ film.description }}<br>
+            <span class="film_details">Release Year:</span> {{film.release_year}}<br>
+            <span class="film_details">Language:</span> {{ film.language }}<br>
+            <span class="film_details">Rating:</span> {{ film.rating }}<br>
+            {% if film.original_language %}
+                <span class="film_details">Original Language:</span> {{ film.original_language }}<br>
+            {% endif %}
         <!-- format_film_length is a custom filter defined in movies_app_filters_and_tags in templatetags folder -->
-        <p><span class="film_details">Length:</span> {{ film.length|format_film_length }}</p>
+            <span class="film_details">Length:</span> {{ film.length|format_film_length }}
+        </p>
     </div>
 
     <div class="all_actors">
-        <h3>Actors</h3>
+        <h3>Starring</h3>
         {% for actor in all_actors %}
             {% with full_name=actor.first_name|add:" "|add:actor.last_name %}
                 <a href="{{ actor.get_absolute_url }}">{{ full_name }}</a>
             {% endwith %}
         {% endfor %}
+    </div>
+
+    <div>
+        {% if user.is_authenticated %}
+            {% if film_availability %}
+                <p>This film is available for rental</p>
+                <p><a class="btn btn-primary rounded-pill" href="{% url 'film_rental' film.film_uuid %}">Rent</a></p>
+            {% else %}
+                <p>This film is not available for rental</p>
+            {% endif %}
+        {% else %}
+            <!-- by adding ?next={{ request.path }} to the login url,  the user is returned to this page after successful login -->
+            <p>Please <a class="btn btn-primary rounded-pill" href="{% url 'account_login' %}?next={{ request.path }}">login</a> to see film availability</p>
+        {% endif %}
     </div>
 
 {% endblock content %}

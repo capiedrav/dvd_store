@@ -1,5 +1,7 @@
 from django.test import TestCase
 from .models import Language, Film, Actor
+from .views import FilmListView, FilmDetailView, ActorListView, ActorDetailView
+from django.urls import reverse
 
 """
 Run these tests using:
@@ -14,6 +16,9 @@ Check project_config/tests_settings.py for more info.
 
 # Create your tests here.
 class FilmTests(TestCase):
+    """
+    Test for Film model.
+    """
 
     def setUp(self):
 
@@ -56,6 +61,65 @@ class FilmTests(TestCase):
 
     def test_films_in_the_database(self):
 
-        self.assertEquals(Film.objects.count(), 2)
-        self.assertEquals(Film.objects.get(pk=1).title, "Gone with the Wind")
-        self.assertEquals(Film.objects.get(pk=2).title, "The Matrix")
+        all_films = Film.objects.all().order_by("last_update")
+
+        self.assertEquals(len(all_films), 2)
+        self.assertEquals(all_films[0].title, "Gone with the Wind")
+        self.assertEquals(all_films[1].title, "The Matrix")
+
+    def test_film_list_view(self):
+
+        response = self.client.get(reverse("film_list")) # do a GET request to the film list url
+
+        self.assertEquals(response.status_code, 200)
+        self.assertTemplateUsed(response, "movies_app/film_list.html") # check for the correct html template
+        # check for the correct view
+        self.assertEquals(response.resolver_match.func.__name__, FilmListView.as_view().__name__)
+
+    def test_film_detail_view(self):
+
+        # do a GET request to the film detail url (passing the pk of a film)
+        response = self.client.get(reverse("film_detail", kwargs={"pk": Film.objects.first().film_uuid}))
+
+        self.assertEquals(response.status_code, 200)
+        self.assertTemplateUsed(response, "movies_app/film_detail.html") # check for the correct html template
+        # check for the correct view
+        self.assertEquals(response.resolver_match.func.__name__, FilmDetailView.as_view().__name__)
+
+
+class ActorTest(TestCase):
+    """
+    Tests for Actor model.
+    """
+
+    def setUp(self):
+
+        Actor.objects.create(first_name="Clark", last_name="Gable")
+        Actor.objects.create(first_name="Keanu", last_name="Reeves")
+
+    def test_actors_in_the_database(self):
+
+        all_actors = Actor.objects.all().order_by("last_update")
+
+        self.assertEquals(len(all_actors), 2)
+        self.assertEquals(all_actors[0].first_name, "Clark")
+        self.assertEquals(all_actors[0].last_name, "Gable")
+        self.assertEquals(all_actors[1].first_name, "Keanu")
+        self.assertEquals(all_actors[1].last_name, "Reeves")
+
+    def test_actors_list_view(self):
+
+        response = self.client.get(reverse("actor_list")) # do a GET request to the actor list url
+
+        self.assertEquals(response.status_code, 200)
+        self.assertTemplateUsed(response, "movies_app/actor_list.html") # check for the correct html template
+        # check for the correct view
+        self.assertEquals(response.resolver_match.func.__name__, ActorListView.as_view().__name__)
+
+    def test_actor_detail_view(self):
+
+        response = self.client.get(reverse("actor_detail", kwargs={"pk": Actor.objects.first().actor_uuid}))
+
+        self.assertEquals(response.status_code, 200)
+        self.assertTemplateUsed(response, "movies_app/actor_detail.html")
+        self.assertEquals(response.resolver_match.func.__name__, ActorDetailView.as_view().__name__)

@@ -1,5 +1,7 @@
 from django.views.generic import ListView, DetailView
+from django.shortcuts import get_object_or_404
 from .models import Film, Actor, FilmActor
+from store_app.models import Inventory, Customer
 
 
 # Create your views here.
@@ -26,7 +28,17 @@ class FilmDetailView(DetailView):
         for actor in actors_in_this_film:
             context["all_actors"].append(Actor.objects.get(pk=actor.actor_id))
 
+        # check whether the film is available for rental
+        if self.request.user.is_authenticated:
+            # get the customer trying to rent the film
+            customer = get_object_or_404(Customer, personal_info=self.request.user)
+            # a film is available for rental if it is available in the same store of the customer
+            film_inventory = [film for film in Inventory.objects.filter(film=context["film"]) if film.available
+                              and film.store == customer.store]
+            context["film_availability"] = len(film_inventory) > 0
+
         return context
+
 
 class ActorListView(ListView):
 

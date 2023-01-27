@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.urls import reverse
 from movies_app.models import Film
 
 
@@ -46,13 +47,14 @@ class Address(models.Model):
     city = models.ForeignKey(City, on_delete=models.RESTRICT)
     postal_code = models.CharField(max_length=10, blank=True, null=True)
     phone = models.CharField(max_length=20)
-    location = models.TextField()  # This field type is a guess.
+    # location = models.TextField(null=True)  # This field type is a guess.
     last_update = models.DateTimeField(auto_now=True)
 
     class Meta:
         managed = True
         db_table = 'address'
         verbose_name_plural = "Addresses"
+        unique_together = (("address", "city"), )
 
     def __str__(self):
         return self.address
@@ -93,9 +95,14 @@ class Staff(models.Model):
 
 class Customer(models.Model):
 
-    store = models.ForeignKey(Store, on_delete=models.RESTRICT)
-    personal_info = models.OneToOneField(CustomUser, primary_key=True, null=False, on_delete=models.RESTRICT)
-    address = models.ForeignKey(Address, on_delete=models.RESTRICT)
+    # NOTE: to avoid this error when trying to create new customers:
+    # django.db.utils.OperationalError: (1054, "Unknown column 'create_date' in 'NEW'")
+    # delete the create_customer trigger in the database
+
+    store = models.ForeignKey(Store,  null=True, on_delete=models.RESTRICT,)
+    personal_info = models.OneToOneField(CustomUser, primary_key=True, null=False, on_delete=models.RESTRICT,
+                                         related_name="customer")
+    address = models.ForeignKey(Address,  null=True, on_delete=models.RESTRICT)
     last_update = models.DateTimeField(auto_now=True)
 
     class Meta:
@@ -112,6 +119,7 @@ class Inventory(models.Model):
     inventory_id = models.AutoField(primary_key=True)
     film = models.ForeignKey(Film, on_delete=models.RESTRICT, null=False)
     store = models.ForeignKey(Store, on_delete=models.RESTRICT)
+    available = models.BooleanField(null=False, default=True)
     last_update = models.DateTimeField(auto_now=True)
 
     class Meta:
@@ -155,6 +163,10 @@ class Payment(models.Model):
     class Meta:
         managed = True
         db_table = 'payment'
+
+    def get_absolute_url(self):
+
+        return reverse("payment_details", args=[str(self.payment_id)])
 
     def __str__(self):
         return "Payment # " + str(self.payment_id)
