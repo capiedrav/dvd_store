@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load movies_app_filters_and_tags %}
 
 {% block title %}{{ actor.first_name }} {{ actor.last_name }}{% endblock title %}
 
@@ -9,7 +10,8 @@
     <div>
         <!-- full_name = actor.first_name + " " + actor.last_name -->
         {% with full_name=actor.first_name|add:" "|add:actor.last_name %}
-            <img class="actor_detail" src="{% static 'movies_app/images/actor_images/'|add:full_name|add:'/Image_1.jpg' %}" alt="{{ full_name }}">
+            <!-- path_to_image is a filter defined in movies_app_filters_and_tags -->
+            <img class="actor_detail" src="{% static full_name|path_to_image:False %}" alt="{{ full_name }}">
             <h2>{{ full_name }}</h2>
         {% endwith %}
     </div>

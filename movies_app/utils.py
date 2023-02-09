@@ -38,3 +38,21 @@ def get_actor_images_from_internet():
             adult_filter_off=False,
             filter="photo"
         )
+
+
+def remove_duplicate_actor_images():
+
+    path = os.path.join(settings.BASE_DIR, "movies_app/static/movies_app/images/actor_images")
+
+    actor_folders = os.listdir(path)
+
+    for actor_folder in actor_folders:
+        actor_path = os.path.join(path, actor_folder)
+        actor_images = os.listdir(actor_path)
+        number_of_images = len(actor_images)
+
+        if number_of_images > 1:
+            print(f"{number_of_images} images found at {actor_path}")
+            image_to_remove = os.path.join(actor_path, actor_images[-1])
+            print(f"Removing {image_to_remove}")
+            os.remove(image_to_remove)

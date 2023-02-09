@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load movies_app_filters_and_tags %}
 
 {% block title %}Actors{% endblock title %}
 
@@ -12,7 +13,8 @@
                 <div class="row my-2">
                     <div class="col-lg">
                         <a href="{{ actor.get_absolute_url }}">
-                            <img class="actor_images" src="{% static 'movies_app/images/actor_images/'|add:full_name|add:'/Image_1.jpg' %}" alt="{{ full_name }}">
+                            <!-- path_to_image is a filter defined in movies_app_filters_and_tags -->
+                            <img class="actor_images" src="{% static full_name|path_to_image:False %}" alt="{{ full_name }}">
                         </a>
                         <h3><a href="{{ actor.get_absolute_url }}">{{ full_name }}</a></h3>
                     </div>

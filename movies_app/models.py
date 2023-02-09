@@ -24,9 +24,9 @@ class Film(models.Model):
     title = models.CharField(max_length=128)
     description = models.TextField(blank=True, null=True)
     release_year = models.TextField(blank=True, null=True)  # This field type is a guess.
-    language = models.ForeignKey(Language, related_name="films_available_in_this_language", on_delete=models.RESTRICT)
+    language = models.ForeignKey(Language, related_name="films_available_in_this_language", on_delete=models.CASCADE)
     original_language = models.ForeignKey(Language, related_name="films_originally_in_this_language",
-                                          on_delete=models.RESTRICT, blank=True, null=True)
+                                          on_delete=models.CASCADE, blank=True, null=True)
     rental_duration = models.PositiveIntegerField()
     rental_rate = models.DecimalField(max_digits=4, decimal_places=2)
     length = models.PositiveSmallIntegerField(blank=True, null=True)
@@ -78,8 +78,8 @@ class FilmText(models.Model):
 
 class FilmCategory(models.Model):
 
-    film = models.OneToOneField(Film, primary_key=True, on_delete=models.RESTRICT, null=False)
-    category = models.ForeignKey(Category, on_delete=models.RESTRICT)
+    film = models.OneToOneField(Film, primary_key=True, on_delete=models.CASCADE, null=False)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
     last_update = models.DateTimeField(auto_now=True)
 
     class Meta:
@@ -112,8 +112,8 @@ class Actor(models.Model):
 
 class FilmActor(models.Model):
 
-    actor = models.OneToOneField(Actor, primary_key=True, on_delete=models.RESTRICT, null=False)
-    film = models.ForeignKey(Film, on_delete=models.RESTRICT, null=False)
+    actor = models.OneToOneField(Actor, primary_key=True, on_delete=models.CASCADE, null=False)
+    film = models.ForeignKey(Film, on_delete=models.CASCADE, null=False)
     last_update = models.DateTimeField(auto_now=True)
 
     class Meta:

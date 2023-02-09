@@ -12,7 +12,8 @@
             <div class="row my-2">
                 <div class="col-lg-2">
                     <a href="{{ film.get_absolute_url }}">
-                        <img class="film_posters" src="{% static 'movies_app/images/film_posters/'|add:film.title|add:'/Image_1.jpg' %}" alt="{{film.title}}">
+                        <!-- path_to_image is a filter defined in movies_app_filters_and_tags -->
+                        <img class="film_posters" src="{% static film.title|path_to_image %}" alt="{{film.title}}">
                     </a>
                 </div>
                 <div class="col-lg">
