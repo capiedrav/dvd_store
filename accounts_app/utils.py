@@ -7,7 +7,6 @@ def get_stores():
     :return: a tuple of available stores.
     """
 
-    store_addresses = tuple((f"{store.store_id}", f"Store at {store.address} ({store.address.city} - "
-                            f"{store.address.city.country})") for store in Store.objects.all())
+    store_addresses = tuple((f"{store.store_id}", f"{store}") for store in Store.objects.all())
 
     return store_addresses

@@ -2,7 +2,7 @@ from django.test import TestCase
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 from .models import Customer, Staff, Address, Store, City, Country, Inventory, Rental, Payment
-from .views import film_rental_view, FilmPaymentView
+from .views import film_rental_view, FilmPaymentView, CustomerProfileView, update_customer_profile
 from movies_app.models import Film, Language
 
 
@@ -42,7 +42,7 @@ class TestCustomersAndStaff(TestCase):
         # boiler-plate models needed for Staff and Customer models
         country = Country.objects.create(country="United States")
         city = City.objects.create(city="Washington", country=country)
-        address = Address.objects.create(address="123 Elm Street", district="Columbia", city=city)
+        address = Address.objects.create(address="123 Elm Street", district="Columbia", city=city, phone="605528858")
 
         # To correctly save Staff and Store models in the database:
 
@@ -62,7 +62,7 @@ class TestCustomersAndStaff(TestCase):
         customer = Customer.objects.get(personal_info=customer_info)
         customer.store = store
         customer.address = address
-        customer.save()
+        customer.save(update_fields=["store", "address"])
 
     def test_customer(self):
         """
@@ -92,6 +92,85 @@ class TestCustomersAndStaff(TestCase):
         self.assertEquals(staff.address.address, Address.objects.first().address)
         self.assertTrue(staff.personal_info.is_staff)
 
+    def test_no_logged_in_customer_cant_access_customer_profile(self):
+        """
+        Test that no logged-in customer can't access his customer profile page.
+        """
+
+        customer_uuid = Customer.objects.first().personal_info.user_uuid
+
+        # make a GET request to the customer profile page
+        response = self.client.get(reverse("customer_profile", kwargs={"user_uuid": customer_uuid}))
+
+        # check that the customer is redirected to the login page
+        self.assertRedirects(response, expected_url=reverse("account_login") +
+                             f"?next=/store/customer_profile/{customer_uuid}/")
+
+        # check that the correct view was used
+        self.assertEquals(response.resolver_match.func.__name__, CustomerProfileView.as_view().__name__)
+
+    def test_logged_in_customer_can_access_customer_profile(self):
+        """
+        Test that a logged-in customer can access his customer profile page.
+        """
+
+        customer_uuid = Customer.objects.first().personal_info.user_uuid
+
+        # login the customer
+        self.client.login(email="test_customer@example.com", password="unodostres")
+
+        # make a GET request to the customer profile page
+        response = self.client.get(reverse("customer_profile", kwargs={"user_uuid": customer_uuid}))
+
+        # check that the page was successfully accessed
+        self.assertEquals(response.status_code, 200)
+        # check that the correct template was used
+        self.assertTemplateUsed(response, "store_app/customer_profile.html")
+        # check that the correct view was used
+        self.assertEquals(response.resolver_match.func.__name__, CustomerProfileView.as_view().__name__)
+
+    def test_no_logged_in_customer_cant_update_customer_profile(self):
+        """
+        Test that no logged-in customer can't update his customer profile.
+        """
+
+        # make a GET request to the update customer profile page
+        response = self.client.get(reverse("update_customer_profile"))
+
+        # check tha the customer is redirected to the login page
+        self.assertRedirects(response, expected_url=reverse("account_login") + "?next=/store/update_customer_profile/")
+
+        # check that the correct view was used
+        self.assertEquals(response.resolver_match.func, update_customer_profile)
+
+    def test_logged_in_customer_can_access_update_profile_page(self):
+
+        # login the customer
+        self.client.login(email="test_customer@example.com", password="unodostres")
+
+        # make a GET request to the customer profile page
+        response = self.client.get(reverse("update_customer_profile"))
+
+        # check that the page was successfully accessed
+        self.assertEquals(response.status_code, 200)
+        # check that the correct template was used
+        self.assertTemplateUsed(response, "store_app/update_customer_profile.html")
+        # check that the correct view was used
+        self.assertEquals(response.resolver_match.func, update_customer_profile)
+
+    def test_logged_in_customer_can_update_customer_profile(self):
+
+        customer_uuid = Customer.objects.first().personal_info.user_uuid
+
+        # login the customer
+        self.client.login(email="test_customer@example.com", password="unodostres")
+
+        # make a POST request to the customer profile page
+        response = self.client.post(reverse("update_customer_profile"), follow=True)
+
+        # check that the customer is redirected to his profile page
+        self.assertRedirects(response, expected_url=reverse("customer_profile", kwargs={"user_uuid": customer_uuid}))
+
 
 class TestFilmRental(TestCase):
 
@@ -114,7 +193,7 @@ class TestFilmRental(TestCase):
         # boiler-plate models needed for Staff and Customer models
         country = Country.objects.create(country="United States")
         city = City.objects.create(city="Washington", country=country)
-        address = Address.objects.create(address="123 Elm Street", district="Columbia", city=city)
+        address = Address.objects.create(address="123 Elm Street", district="Columbia", city=city, phone="605528858")
 
         # To correctly save Staff and Store models in the database:
 
@@ -134,7 +213,7 @@ class TestFilmRental(TestCase):
         customer = Customer.objects.get(personal_info=customer_info)
         customer.store = store
         customer.address = address
-        customer.save()
+        customer.save(update_fields=["store", "address"])
 
         # setup film data
         language = Language(name="English")
@@ -269,3 +348,17 @@ class TestFilmRental(TestCase):
 
         # check the view used when redirected
         self.assertEquals(response.resolver_match.func.__name__, FilmPaymentView.as_view().__name__)
+
+    def test_customer_cant_rent_film_when_is_not_available(self):
+        """
+        When trying to rent an unavailable film, a 404 server error must be raised.
+        """
+
+        # login the customer
+        self.client.login(email="test_customer@example.com", password="unodostres")
+
+        # make a POST request to the film rental page for a film that is not available for rental
+        response = self.client.post(reverse("film_rental",
+                                            kwargs={"pk": Film.objects.get(title="The Matrix").film_uuid}))
+
+        self.assertEquals(response.status_code, 404) # there must be a 404 server error

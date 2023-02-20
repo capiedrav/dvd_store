@@ -49,6 +49,8 @@ class CustomSignupForm(SignupForm):
         customer = Customer.objects.get(personal_info=user)
         customer.store = store
         customer.address = customer_address
-        customer.save()
+
+        # update_fields internally issues an update sql statement (avoids race conditions)
+        customer.save(update_fields=["store", "address"])
 
         return user

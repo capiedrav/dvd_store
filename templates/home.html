@@ -1,20 +1,35 @@
 {% extends "base.html" %}
 {% load static %}
 
-
-{% block title %}Home{% endblock title %}
+{% block title %}DVD Store - The best place to rent your favorite DVDs{% endblock title %}
 
 {% block content %}
-    <h1>DVD Store</h1>
-    <img class="dvd_store_logo" src="{% static 'images/dvd-store-vector.jpg' %}">
-    {% if user.is_authenticated %}
+<style>
+    .bg-image{
+        background-image: url('{% static 'images/dvds.jpg' %}');
+        height: 40vh;
+    }
+</style>
+<div class="row border">
+    <div class="col-lg-12">
+        <div class="bg-image">
+            <h1 class="text_over_image">DVD Store</h1>
+            <h4 class="text_over_image">The best place to rent your favorite DVDs</h4>
+        </div>
+    </div>
+</div>
+<div class="row border">
+    <div class="col-lg-12">
+        {% if user.is_authenticated %}
         <p>Hello, {{ user.username }}</p>
         <p><a href="{% url 'account_logout' %}">Log Out</a></p>
+        <p><a href="{{ user.customer.get_absolute_url }}">Go to profile page</a></p>
     {% else %}
         <p>
             You are not log in, <a href="{% url 'account_login' %}">Log In</a><br>
             <a href="{% url 'account_signup' %}">Sign Up</a>
         </p>
-
     {% endif %}
+    </div>
+</div>
 {% endblock content %}

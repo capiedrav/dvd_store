@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %} Update profile of customer {{ user.username }} - DVD Store {% endblock title %}
+
+{% block content %}
+    <h1>Update profile of customer {{ user.username }}</h1>
+    <form method="post">
+        {% csrf_token %}
+
+        <h2>Personal information</h2>
+        {{ personal_info_form|crispy }}
+        <hr>
+        <h2>Customer information</h2>
+        {{customer_store_form|crispy}}
+        {{customer_address_form|crispy}}
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+
+{% endblock content %}
+
+

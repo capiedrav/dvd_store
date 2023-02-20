@@ -26,7 +26,7 @@ class City(models.Model):
 
     city_id = models.SmallAutoField(primary_key=True)
     city = models.CharField(max_length=50)
-    country = models.ForeignKey(Country, on_delete=models.RESTRICT)
+    country = models.ForeignKey(Country, on_delete=models.CASCADE)
     last_update = models.DateTimeField(auto_now=True)
 
     class Meta:
@@ -44,10 +44,9 @@ class Address(models.Model):
     address = models.CharField(max_length=50)
     address2 = models.CharField(max_length=50, blank=True, null=True)
     district = models.CharField(max_length=20)
-    city = models.ForeignKey(City, on_delete=models.RESTRICT)
+    city = models.ForeignKey(City, on_delete=models.CASCADE)
     postal_code = models.CharField(max_length=10, blank=True, null=True)
     phone = models.CharField(max_length=20)
-    # location = models.TextField(null=True)  # This field type is a guess.
     last_update = models.DateTimeField(auto_now=True)
 
     class Meta:
@@ -64,8 +63,8 @@ class Store(models.Model):
 
     store_id = models.AutoField(primary_key=True)
     manager_staff = models.OneToOneField('Staff', null=True, related_name="in_charge_of_store",
-                                         on_delete=models.RESTRICT)
-    address = models.ForeignKey(Address, on_delete=models.RESTRICT)
+                                         on_delete=models.CASCADE)
+    address = models.ForeignKey(Address, on_delete=models.CASCADE)
     last_update = models.DateTimeField(auto_now=True)
 
     class Meta:
@@ -73,15 +72,15 @@ class Store(models.Model):
         db_table = 'store'
 
     def __str__(self):
-        return "Store #" + str(self.store_id)
+        return f"Store at {self.address} ({self.address.city} - {self.address.city.country})"
 
 
 class Staff(models.Model):
 
-    personal_info = models.OneToOneField(CustomUser, primary_key=True, null=False, on_delete=models.RESTRICT)
-    address = models.ForeignKey(Address, on_delete=models.RESTRICT)
+    personal_info = models.OneToOneField(CustomUser, primary_key=True, null=False, on_delete=models.CASCADE)
+    address = models.ForeignKey(Address, on_delete=models.CASCADE)
     picture = models.BinaryField(blank=True, null=True) # inspectdb initially set this as TextField generating errors
-    store = models.ForeignKey(Store, related_name="managed_by", on_delete=models.RESTRICT)
+    store = models.ForeignKey(Store, related_name="managed_by", on_delete=models.CASCADE)
     last_update = models.DateTimeField(auto_now=True)
 
     class Meta:
@@ -99,16 +98,20 @@ class Customer(models.Model):
     # django.db.utils.OperationalError: (1054, "Unknown column 'create_date' in 'NEW'")
     # delete the create_customer trigger in the database
 
-    store = models.ForeignKey(Store,  null=True, on_delete=models.RESTRICT,)
-    personal_info = models.OneToOneField(CustomUser, primary_key=True, null=False, on_delete=models.RESTRICT,
+    store = models.ForeignKey(Store,  null=True, on_delete=models.CASCADE,)
+    personal_info = models.OneToOneField(CustomUser, primary_key=True, null=False, on_delete=models.CASCADE,
                                          related_name="customer")
-    address = models.ForeignKey(Address,  null=True, on_delete=models.RESTRICT)
+    address = models.ForeignKey(Address,  null=True, on_delete=models.CASCADE)
     last_update = models.DateTimeField(auto_now=True)
 
     class Meta:
         managed = True
         db_table = 'customer'
         verbose_name_plural = "Customers"
+
+    def get_absolute_url(self):
+
+        return reverse("customer_profile", args=[str(self.personal_info.user_uuid)])
 
     def __str__(self):
         return self.personal_info.first_name + " " + self.personal_info.last_name
@@ -117,8 +120,8 @@ class Customer(models.Model):
 class Inventory(models.Model):
 
     inventory_id = models.AutoField(primary_key=True)
-    film = models.ForeignKey(Film, on_delete=models.RESTRICT, null=False)
-    store = models.ForeignKey(Store, on_delete=models.RESTRICT)
+    film = models.ForeignKey(Film, on_delete=models.CASCADE, null=False)
+    store = models.ForeignKey(Store, on_delete=models.CASCADE)
     available = models.BooleanField(null=False, default=True)
     last_update = models.DateTimeField(auto_now=True)
 
@@ -135,10 +138,10 @@ class Rental(models.Model):
 
     rental_id = models.AutoField(primary_key=True)
     rental_date = models.DateTimeField()
-    inventory = models.ForeignKey(Inventory, on_delete=models.RESTRICT)
-    customer = models.ForeignKey(Customer, null=False, on_delete=models.RESTRICT)
+    inventory = models.ForeignKey(Inventory, on_delete=models.CASCADE)
+    customer = models.ForeignKey(Customer, null=False, on_delete=models.CASCADE)
     return_date = models.DateTimeField(blank=True, null=True)
-    staff = models.ForeignKey(Staff, null=False, on_delete=models.RESTRICT)
+    staff = models.ForeignKey(Staff, null=False, on_delete=models.CASCADE)
     last_update = models.DateTimeField(auto_now=True)
 
     class Meta:
@@ -153,9 +156,9 @@ class Rental(models.Model):
 class Payment(models.Model):
 
     payment_id = models.SmallAutoField(primary_key=True)
-    customer = models.ForeignKey(Customer, null=False, on_delete=models.RESTRICT)
-    staff = models.ForeignKey(Staff, null=False, on_delete=models.RESTRICT)
-    rental = models.ForeignKey(Rental, on_delete=models.RESTRICT, blank=True, null=True)
+    customer = models.ForeignKey(Customer, null=False, on_delete=models.CASCADE)
+    staff = models.ForeignKey(Staff, null=False, on_delete=models.CASCADE)
+    rental = models.ForeignKey(Rental, on_delete=models.CASCADE, blank=True, null=True)
     amount = models.DecimalField(max_digits=5, decimal_places=2)
     payment_date = models.DateTimeField()
     last_update = models.DateTimeField(auto_now=True)
