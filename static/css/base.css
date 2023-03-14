@@ -1,8 +1,106 @@
-.dvd_store_logo {
-    height: 300px;
-    widht: 300px ;
+/* general styles*/
+body {
+    background-color: #e8e8e8;
 }
-.text_over_image {
-        color: red;
+h1, h2, h3 {
+    font-family: 'Concert One', cursive;
+    color: blueviolet;
+}
+/* homepage styles*/
+.home-header .row {
+    background-color: white;
+
+}
+.home-header .header-img {
+    background-color: #e8e8e8;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.home-header img {
+    max-width: 100%;
+}
+
+.film-categories-nav .nav-link {
+    color: #484f59;
+}
+
+.featured-films {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.featured-films .carousel-item {
+    width: 600px;
+    height: 400px;
+}
+
+.featured-film {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.2em;
+}
+.featured-film .film-title {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: blueviolet;
+    margin-bottom: 0.1em;
+}
+
+.featured-film .film-category {
+    color: blueviolet;
+
+}
+
+.featured-film .film-description{
+    text-align: center;
+}
+
+.featured-film img{
+    width: 100%;
+    height: 100%;
+    border-radius: 2%;
+}
+
+/* media queries */
+
+@media screen and (max-width: 768px) { /* styles for medium sized screens */
+     .featured-film {
+        font-size: 1em;
     }
 
+    .featured-film .film-title{
+        font-size: 1.2em;
+    }
+
+    .featured-films .carousel-item {
+        width: 600px;
+        height: 300px;
+    }
+}
+
+@media screen and (max-width: 576px) { /* styles for small sized screens */
+    .featured-film {
+        font-size: 1em;
+    }
+
+    .featured-film .film-title{
+        font-size: 1.2em;
+    }
+
+    .featured-films .carousel-item {
+        width: 100%;
+        height: 100%;
+    }
+
+    .featured-film img {
+        width: 300px;
+        height: 150px;
+    }
+}
