@@ -1,7 +1,9 @@
 /* general styles*/
 body {
     background-color: #e8e8e8;
+    font-family: 'Roboto', sans-serif;
 }
+
 h1, h2, h3 {
     font-family: 'Concert One', cursive;
     color: blueviolet;
@@ -19,6 +21,12 @@ h1, h2, h3 {
 
 .home-header img {
     max-width: 100%;
+}
+
+.home-header .header-buttons{
+    display: flex;
+    justify-content: right;
+    margin-top: 50px;
 }
 
 .film-categories-nav .nav-link {
@@ -43,7 +51,7 @@ h1, h2, h3 {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    font-family: 'Roboto', sans-serif;
+    /*font-family: 'Roboto', sans-serif;*/
     font-size: 1.2em;
 }
 .featured-film .film-title {
@@ -68,9 +76,24 @@ h1, h2, h3 {
     border-radius: 2%;
 }
 
+footer {
+    text-align: center;
+    font-size: 0.8em;
+    background-color: #cfe2ff;
+    height: 40px;
+    margin-top: 20px;
+    padding-top: 10px
+}
+
 /* media queries */
 
+@media screen and (max-width: 992px) { /* styles for large sized screens */
+    .home-header .header-img{
+        margin-top: 10px;
+    }
+}
 @media screen and (max-width: 768px) { /* styles for medium sized screens */
+
      .featured-film {
         font-size: 1em;
     }

@@ -8,11 +8,15 @@
   <header class="home-header">
     <div class="container">
       <div class="row align-items-center text-center text-lg-start">
-        <div class="col-12 col-lg-6">
+        <div class="col-12 col-lg-5">
           <h1>DVD Store</h1>
           <h2>The Best Place to Rent Your Favorite DVDs</h2>
+          <div class="header-buttons">
+            <a class="btn btn-primary me-2" href="{% url 'account_login' %}">Log In</a>
+            <a class="btn btn-primary" href="{% url 'account_signup' %}">Sign Up</a>
+          </div>
         </div>
-        <div class="col-12 col-lg-6 header-img">
+        <div class="col-12 col-lg-7 header-img">
           <img src="{% static 'images/dvds.jpg' %}" alt="Lots of DVDs">
         </div>
       </div>
@@ -23,7 +27,7 @@
       <div class="container">
         <ul class="nav justify-content-center rounded-pill bg-primary-subtle">
           <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="#">All Films</a>
+            <a class="nav-link" aria-current="page" href="{% url 'film_list' %}">All Films</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#">Action</a>
