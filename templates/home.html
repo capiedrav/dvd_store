@@ -12,12 +12,12 @@
           <h1>DVD Store</h1>
           <h2>The Best Place to Rent Your Favorite DVDs</h2>
           <div class="header-buttons">
-            <a class="btn btn-primary me-2" href="{% url 'account_login' %}">Log In</a>
+            <a class="btn btn-primary me-4" href="{% url 'account_login' %}">Log In</a>
             <a class="btn btn-primary" href="{% url 'account_signup' %}">Sign Up</a>
           </div>
         </div>
         <div class="col-12 col-lg-7 header-img">
-          <img src="{% static 'images/dvds.jpg' %}" alt="Lots of DVDs">
+          <img src="{% static 'images/dvd-store-vector-removebg.png' %}" alt="DVD Store">
         </div>
       </div>
     </div>
@@ -27,7 +27,7 @@
       <div class="container">
         <ul class="nav justify-content-center rounded-pill bg-primary-subtle">
           <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="{% url 'film_list' %}">All Films</a>
+            <a class="nav-link" aria-current="page" href="{% url 'film_list' %}">All DVDs</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#">Action</a>
@@ -41,7 +41,7 @@
         </ul>
       </div>
     </section>
-    <section class="featured-films mt-3">
+    <section class="featured-films">
       <h2>Featured Films</h2>
       <div id="featuredFilmsCarousel" class="carousel slide mt-2" data-bs-ride="carousel">
         <div class="carousel-inner">

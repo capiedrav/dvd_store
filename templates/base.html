@@ -20,7 +20,6 @@
   <link rel="stylesheet" href="{% static 'css/base.css' %}" type="text/css">
 </head>
 <body>
-
   <!-- navbar -->
   <nav class="navbar sticky-top navbar-expand-sm bg-primary-subtle">
     <div class="container-fluid">
@@ -50,12 +49,9 @@
     </div>
   </nav>
 
-  <!-- main container -->
-  <div class="container-xl mt-3">
-    {% block content %}
-    {% endblock content %}
-  </div>
-
+  {% block content %}
+    <!-- put your content here -->
+  {% endblock content %}
   <footer>
     <p>Designed by <a href="mailto:capiedrav@gmail.com">capiedrav</a> - All rights reserved &copy</p>
   </footer>

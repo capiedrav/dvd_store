@@ -1,26 +1,21 @@
 /* general styles*/
 body {
-    background-color: #e8e8e8;
+    background-color: whitesmoke;
     font-family: 'Roboto', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
-h1, h2, h3 {
-    font-family: 'Concert One', cursive;
-    color: blueviolet;
-}
-/* homepage styles*/
-.home-header .row {
-    background-color: white;
-
-}
-.home-header .header-img {
-    background-color: #e8e8e8;
-    padding-left: 0;
-    padding-right: 0;
+h1 {
+    font-size: 3em;
+    font-weight: bold;
 }
 
 .home-header img {
     max-width: 100%;
+    margin: auto; /* this two properties center the img inside the div */
+    display: block;
 }
 
 .home-header .header-buttons{
@@ -29,41 +24,56 @@ h1, h2, h3 {
     margin-top: 50px;
 }
 
+.home-main{
+    background-color: #f8f4f4;
+    padding-top: 20px;
+    border-top: 1px solid lightgray;
+    flex: 4 0 auto;
+
+}
+
+.film-categories-nav .nav-item{
+    background-color: dodgerblue;
+    border-radius: 50%;
+    margin: 5px 10px;
+}
+
 .film-categories-nav .nav-link {
-    color: #484f59;
+    color: black;
 }
 
 .featured-films {
+    margin-top: 30px;
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+.featured-films h2{
+    font-weight: bold;
 }
 
 .featured-films .carousel-item {
     width: 600px;
-    height: 400px;
+    height: 450px;
 }
 
 .featured-film {
-    width: 100%;
-    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    /*font-family: 'Roboto', sans-serif;*/
-    font-size: 1.2em;
 }
+
 .featured-film .film-title {
     font-size: 1.2em;
     font-weight: bold;
     color: blueviolet;
-    margin-bottom: 0.1em;
+    margin-bottom: 0;
 }
 
 .featured-film .film-category {
     color: blueviolet;
-
 }
 
 .featured-film .film-description{
@@ -71,8 +81,8 @@ h1, h2, h3 {
 }
 
 .featured-film img{
-    width: 100%;
-    height: 100%;
+    width: 300px;
+    height: 300px;
     border-radius: 2%;
 }
 
@@ -80,37 +90,39 @@ footer {
     text-align: center;
     font-size: 0.8em;
     background-color: #cfe2ff;
-    height: 40px;
-    margin-top: 20px;
-    padding-top: 10px
+    padding-top: 10px;
+    flex: 1 0 auto;
 }
 
 /* media queries */
 
 @media screen and (max-width: 992px) { /* styles for large sized screens */
+    .home-header{
+        margin-top: 20px;
+    }
+
     .home-header .header-img{
         margin-top: 10px;
     }
+
+    .home-header .header-buttons {
+        justify-content: center;
+    }
 }
 @media screen and (max-width: 768px) { /* styles for medium sized screens */
-
-     .featured-film {
+    .featured-film {
         font-size: 1em;
     }
 
     .featured-film .film-title{
         font-size: 1.2em;
     }
-
-    .featured-films .carousel-item {
-        width: 600px;
-        height: 300px;
-    }
 }
+
 
 @media screen and (max-width: 576px) { /* styles for small sized screens */
     .featured-film {
-        font-size: 1em;
+        font-size: 0.9em;
     }
 
     .featured-film .film-title{
@@ -123,7 +135,7 @@ footer {
     }
 
     .featured-film img {
-        width: 300px;
-        height: 150px;
+        width: 200px;
+        height: 200px;
     }
 }
