@@ -9,6 +9,11 @@ class FilmListView(ListView):
 
     model = Film
     template_name = "movies_app/film_list.html"
+    paginate_by = 50 # display 50 items at a time
+
+    def get_queryset(self):
+        # order films by title and retrieve their categories in a single query
+        return Film.objects.select_related("filmcategory").all().order_by("title")
 
 
 class FilmDetailView(DetailView):
