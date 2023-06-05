@@ -12,15 +12,15 @@
         <!-- path_to_image is a filter defined in movies_app_filters_and_tags -->
         <img class="film_posters" src="{% static film.title|path_to_image %}" alt="{{film.title}}">
         <p>
-            <span class="film_details">Description:</span> {{ film.description }}<br>
-            <span class="film_details">Release Year:</span> {{film.release_year}}<br>
-            <span class="film_details">Language:</span> {{ film.language }}<br>
-            <span class="film_details">Rating:</span> {{ film.rating }}<br>
+            <span class="film-details">Description:</span> {{ film.description }}<br>
+            <span class="film-details">Release Year:</span> {{film.release_year}}<br>
+            <span class="film-details">Language:</span> {{ film.language }}<br>
+            <span class="film-details">Rating:</span> {{ film.rating }}<br>
             {% if film.original_language %}
-                <span class="film_details">Original Language:</span> {{ film.original_language }}<br>
+                <span class="film-details">Original Language:</span> {{ film.original_language }}<br>
             {% endif %}
         <!-- format_film_length is a custom filter defined in movies_app_filters_and_tags in templatetags folder -->
-            <span class="film_details">Length:</span> {{ film.length|format_film_length }}
+            <span class="film-details">Length:</span> {{ film.length|format_film_length }}
         </p>
     </div>
 

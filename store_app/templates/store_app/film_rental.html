@@ -14,12 +14,12 @@
       <div class="col-lg">
         <h2>{{film.title}}</h2>
         <p>
-          <span class="film_details">Description: </span>{{film.description}}<br>
-          <span class="film_details">Rating: </span>{{film.rating}}<br>
-          <span class="film_details">Release Year: </span>{{film.release_year}}<br>
-          <span class="film_details">Language: </span>{{film.language}}<br>
+          <span class="film-details">Description: </span>{{film.description}}<br>
+          <span class="film-details">Rating: </span>{{film.rating}}<br>
+          <span class="film-details">Release Year: </span>{{film.release_year}}<br>
+          <span class="film-details">Language: </span>{{film.language}}<br>
           {% if film.original_language %}
-            <span class="film_details">Original language: </span>{{film.original_language}}
+            <span class="film-details">Original language: </span>{{film.original_language}}
           {% endif %}
         </p>
       </div>
@@ -30,8 +30,8 @@
         {% if film_available %}
           <p>Film is available for rental</p>
           <p>
-            <span class="film_details">Rental rate: </span>{{film.rental_rate}}<br>
-            <span class="film_details">Rental duration: </span>{{film.rental_duration}} days<br>
+            <span class="film-details">Rental rate: </span>{{film.rental_rate}}<br>
+            <span class="film-details">Rental duration: </span>{{film.rental_duration}} days<br>
           </p>
 
           <!-- This form consist of only the button that triggers the payment procedure -->
