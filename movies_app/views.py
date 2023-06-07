@@ -33,6 +33,9 @@ class FilmDetailView(DetailView):
         for actor in actors_in_this_film:
             context["all_actors"].append(Actor.objects.get(pk=actor.actor_id))
 
+        # get five films to suggest to the user
+        context["suggested_films"] = Film.objects.exclude(title=context["film"].title)[:5]
+
         # check whether the film is available for rental
         if self.request.user.is_authenticated:
             # get the customer trying to rent the film
