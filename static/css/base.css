@@ -28,7 +28,7 @@ h1 {
     background-color: #f8f4f4;
     padding-top: 20px;
     border-top: 1px solid lightgray;
-    flex: 4 0 auto;
+    flex: 1 0 auto;
 
 }
 
@@ -72,7 +72,7 @@ h1 {
     margin-bottom: 0;
 }
 
-.featured-film .film-category {
+.featured-film .film-metadata {
     color: blueviolet;
 }
 
@@ -87,11 +87,12 @@ h1 {
 }
 
 footer {
+    min-height: 50px;
     text-align: center;
     font-size: 0.8em;
     background-color: #cfe2ff;
     padding-top: 10px;
-    flex: 1 0 auto;
+    /*flex: 1 0 auto;*/
 }
 
 /* media queries */

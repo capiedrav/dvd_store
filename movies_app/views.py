@@ -10,10 +10,7 @@ class FilmListView(ListView):
     model = Film
     template_name = "movies_app/film_list.html"
     paginate_by = 50 # display 50 items at a time
-
-    def get_queryset(self):
-        # order films by title and retrieve their categories in a single query
-        return Film.objects.select_related("filmcategory").all().order_by("title")
+    queryset = Film.objects.select_related("filmcategory").all().order_by("title")
 
 
 class FilmDetailView(DetailView):
@@ -26,15 +23,15 @@ class FilmDetailView(DetailView):
 
         context = super().get_context_data(**kwargs)
 
-        # get all actors in this film
-        actors_in_this_film = FilmActor.objects.filter(film=context["film"])
+        film_actors = FilmActor.objects.filter(film=context["film"]).prefetch_related("actor")
         context["all_actors"] = []
 
-        for actor in actors_in_this_film:
-            context["all_actors"].append(Actor.objects.get(pk=actor.actor_id))
+        for film_actor in film_actors:
+            context["all_actors"].append(film_actor.actor)
 
         # get five films to suggest to the user
-        context["suggested_films"] = Film.objects.exclude(title=context["film"].title)[:5]
+        context["suggested_films"] = Film.objects.select_related("filmcategory").exclude(
+            title=context["film"].title)[:5]
 
         # check whether the film is available for rental
         if self.request.user.is_authenticated:
