@@ -17,7 +17,10 @@ def format_film_length(value):
         hours = value // 60
         minutes = value % 60
 
-        length_formatted = f"{hours}h:{minutes}m"
+        if hours:
+            length_formatted = f"{hours}h:{minutes}m"
+        else:
+            length_formatted = f"{minutes}m"
 
     return length_formatted
 
