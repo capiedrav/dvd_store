@@ -5,23 +5,25 @@
 {% block title %}Actors{% endblock title %}
 
 {% block content %}
-    <h1>All Actors</h1>
-    <link rel="stylesheet" type="text/css" href="{% static 'movies_app/css/movies_app.css' %}">
-    {% for actor in actor_list %}
-        <div class="container">
-            {% with full_name=actor.first_name|add:" "|add:actor.last_name %} <!-- full_name = actor.first_name + " " + actor.last_name -->
-                <div class="row my-2">
-                    <div class="col-lg">
-                        <a href="{{ actor.get_absolute_url }}">
-                            {# path_to_image is a filter defined in movies_app_filters_and_tags #}
-                            <img class="actor_images" src="{% static full_name|path_to_image:False %}" alt="{{ full_name }}">
-                        </a>
-                        <h3><a href="{{ actor.get_absolute_url }}">{{ full_name }}</a></h3>
-                    </div>
-                </div>
-            {% endwith %}
-        </div>
-    {% endfor %}
+<main>
+  <h1 class="text-center">All Actors</h1>
+  <link rel="stylesheet" type="text/css" href="{% static 'movies_app/css/actor_list.css' %}">
+  <div class="container">
+    <div id="actor-list" class="row">
+      {% for actor in actor_list %}
+        {% with full_name=actor.first_name|add:" "|add:actor.last_name %} {# full_name = actor.first_name + " " + actor.last_name #}
+          <div class="col-sm col-md-4 col-lg-3 col-xl-2 actor">
+            <a href="{{ actor.get_absolute_url }}">
+              {# path_to_image is a filter defined in movies_app_filters_and_tags #}
+              <img src="{% static full_name|path_to_image:False %}" alt="{{ full_name }}">
+            </a>
+            <p class="text-center"><a href="{{ actor.get_absolute_url }}">{{ full_name }}</a></p>
+          </div>
+        {% endwith %}
+      {% endfor %}
+    </div>
+  </div>
+</main>
 {% endblock content %}
 
 
