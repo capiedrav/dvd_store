@@ -4,25 +4,53 @@
 
 {% block title %}{{ actor.first_name }} {{ actor.last_name }}{% endblock title %}
 
-{% block content %}
+{% block more_css %}
+  <link rel="stylesheet" type="text/css" href="{% static 'movies_app/css/actor_detail.css' %}">
+{% endblock more_css %}
 
-    <link rel="stylesheet" type="text/css" href="{% static 'movies_app/css/movies_app.css' %}">
-    <div>
-        <!-- full_name = actor.first_name + " " + actor.last_name -->
-        {% with full_name=actor.first_name|add:" "|add:actor.last_name %}
-            <!-- path_to_image is a filter defined in movies_app_filters_and_tags -->
+{% block content %}
+  <div class="container">
+    <div class="row">
+      <div class="col-sm col-md-10">
+        <div id="actor-image">
+          {# full_name = actor.first_name + " " + actor.last_name #}
+          {% with full_name=actor.first_name|add:" "|add:actor.last_name %}
+            {# path_to_image is a filter defined in movies_app_filters_and_tags #}
             <img class="actor_detail" src="{% static full_name|path_to_image:False %}" alt="{{ full_name }}">
             <h2>{{ full_name }}</h2>
-        {% endwith %}
+          {% endwith %}
+        </div>
+        <div id="all-films">
+          <h3>Films</h3>
+          <ul>
+            {% for film in all_films %}
+              <li>
+                <a href="{{ film.get_absolute_url }}">
+                  <img src="{% static film.title|path_to_image %}" alt="">
+                  {{ film.title }}
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+      <div class="col-sm col-md-2">
+        <div id="more-actors">
+          <h3>More Actors</h3>
+          <ul>
+            {% for actor in more_actors %}
+              <li>
+                <a href="{{actor.get_absolute_url}}">
+                  {% with full_name=actor.first_name|add:" "|add:actor.last_name %}
+                    <img src="{% static full_name|path_to_image:False %}" alt="">
+                    {{full_name}}
+                  {% endwith %}
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
     </div>
-
-    <div class="all_films">
-        <h3>Films</h3>
-        {% for film in all_films %}
-            <a href="{{ film.get_absolute_url }}">{{ film.title }}</a>
-        {% endfor %}
-    </div>
-
+  </div>
 {% endblock content %}
-
-

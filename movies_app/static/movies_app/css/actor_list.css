@@ -1,0 +1,34 @@
+/* styles for actor list page */
+
+#actor-list{
+    margin: 20px 0;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.actor{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.actor img{
+    width: 150px;
+    height: 150px;
+    margin-bottom: 10px;
+    border-radius: 5%;
+}
+
+.actor a{
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* media queries */
+@media screen and (max-width: 768px){
+    #actor-list{
+        flex-direction: column;
+        flex-wrap: nowrap;
+        align-items: center;
+    }
+}

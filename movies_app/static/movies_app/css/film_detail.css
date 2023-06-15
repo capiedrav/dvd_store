@@ -1,0 +1,132 @@
+/* styles for film details page */
+
+#film-poster{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+#film-poster img{
+    max-width: 90%;
+    border-radius: 2%;
+    max-height: 400px;
+    margin-bottom: 10px;
+}
+
+#film-poster h2{
+    font-weight: bold;
+}
+
+.film-details {
+    font-weight: bold;
+}
+
+#film-info{
+    border-bottom: 1px solid lightgray;
+    margin-bottom: 20px;
+}
+
+#film-info p{
+    margin-bottom: 10px;
+}
+
+#starring-actors{
+    border-bottom: 1px solid lightgray;
+    margin-bottom: 20px;
+}
+
+#starring-actors h3{
+    text-align: center;
+    font-weight: bold;
+}
+#starring-actors ul{
+    display: flex;
+    list-style-type: none;
+    flex-wrap: wrap;
+    margin-top: 20px;
+    padding-left: 0;
+}
+
+#starring-actors img{
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+    border: 1px solid black;
+}
+
+#starring-actors li{
+    width: 160px;
+    height: 100px;
+}
+
+#starring-actors a{
+    text-decoration: none;
+    margin: 0 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#suggested-films{
+    margin-left: 30px;
+}
+
+#suggested-films h3{
+    text-align: center;
+    font-weight: bold;
+}
+
+#suggested-films ul{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    list-style-type: none;
+    padding-left: 0;
+    margin-top: 20px;
+}
+
+#suggested-films img{
+    width: 100px;
+    height: 100px;
+    border-radius: 5%;
+}
+
+#suggested-films a{
+    text-decoration: none;
+    display: flex;
+    align-items: flex-start;
+    color: black;
+    margin-bottom: 20px;
+}
+
+.film-metadata{
+    font-weight: lighter;
+    color: grey;
+    font-size: 0.9em;
+}
+
+/* media queries */
+
+@media screen and (max-width: 768px) { /* some css for screens up to medium size */
+    #suggested-films{
+        margin-left: 0;
+    }
+    #suggested-films ul{
+        align-items: center;
+    }
+
+    #starring-actors ul{
+        justify-content: space-between;
+    }
+    #suggested-films li{
+        width: 270px;
+    }
+
+    #film-available{
+        text-align: center;
+        margin: 25px 0;
+        border-bottom: 1px solid lightgray;
+    }
+    
+}

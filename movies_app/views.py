@@ -9,6 +9,8 @@ class FilmListView(ListView):
 
     model = Film
     template_name = "movies_app/film_list.html"
+    paginate_by = 50 # display 50 items at a time
+    queryset = Film.objects.select_related("filmcategory").all().order_by("title")
 
 
 class FilmDetailView(DetailView):
@@ -21,12 +23,15 @@ class FilmDetailView(DetailView):
 
         context = super().get_context_data(**kwargs)
 
-        # get all actors in this film
-        actors_in_this_film = FilmActor.objects.filter(film=context["film"])
+        film_actors = FilmActor.objects.filter(film=context["film"]).prefetch_related("actor")
         context["all_actors"] = []
 
-        for actor in actors_in_this_film:
-            context["all_actors"].append(Actor.objects.get(pk=actor.actor_id))
+        for film_actor in film_actors:
+            context["all_actors"].append(film_actor.actor)
+
+        # get five films to suggest to the user
+        context["suggested_films"] = Film.objects.select_related("filmcategory").exclude(
+            title=context["film"].title)[:5]
 
         # check whether the film is available for rental
         if self.request.user.is_authenticated:
@@ -44,6 +49,7 @@ class ActorListView(ListView):
 
     model = Actor
     template_name = "movies_app/actor_list.html"
+    queryset = Actor.objects.all().order_by("last_name", "first_name")
 
 
 class ActorDetailView(DetailView):
@@ -57,11 +63,15 @@ class ActorDetailView(DetailView):
         context = super().get_context_data(**kwargs)
 
         # get all films in which this actor has worked
-        films_of_this_actor = FilmActor.objects.filter(actor=context["actor"])
+        films_of_this_actor = FilmActor.objects.prefetch_related("film").filter(actor=context["actor"]).\
+            order_by("film__title")
+
         context["all_films"] = []
 
         for film in films_of_this_actor:
-            context["all_films"].append(Film.objects.get(pk=film.film_id))
+            context["all_films"].append(film.film)
+
+        # get five more actors to show
+        context["more_actors"] = Actor.objects.exclude(actor_uuid=context["actor"].actor_uuid)[:5]
 
         return context
-
