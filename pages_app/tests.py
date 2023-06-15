@@ -1,4 +1,4 @@
-from django.test import SimpleTestCase
+from django.test import TestCase, SimpleTestCase
 from django.urls import reverse, resolve
 from .views import HomePageView, AboutPageView
 
@@ -14,7 +14,7 @@ Check project_config/tests_settings.py for more info.
 
 
 # Create your tests here.
-class HomePageTests(SimpleTestCase):
+class HomePageTests(TestCase):
 
     def setUp(self):
 
