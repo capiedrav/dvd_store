@@ -4,7 +4,11 @@
 
 {% block title %}DVD Store - The best place to rent your favorite DVDs{% endblock title %}
 
-{% block content %}
+{% block more_css %}
+  <link rel="stylesheet" href="{% static 'css/home.css' %}" type="text/css">
+{% endblock more_css %}
+
+{% block header %}
   <header class="home-header">
     <div class="container">
       <div class="row align-items-center text-center text-lg-start">
@@ -22,60 +26,61 @@
       </div>
     </div>
   </header>
-  <main class="home-main mt-3">
-    <section class="film-categories-nav">
-      <div class="container">
-        <ul class="nav justify-content-center rounded-pill bg-primary-subtle">
-          <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="{% url 'film_list' %}">All DVDs</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Action</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Comedy</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Drama</a>
-          </li>
-        </ul>
-      </div>
-    </section>
-    <section class="featured-films">
-      <h2>Featured Films</h2>
-      <div id="featuredFilmsCarousel" class="carousel slide mt-2" data-bs-ride="carousel">
-        <div class="carousel-inner">
-          {% for film_and_category in featured_films %}
-            {% if forloop.counter0 == 0 %} <!-- forloop.counter0 enumerates items in featured_films from 0 -->
-              <div class="carousel-item active">
-                <div class="featured-film">
-                  <img src="{% static film_and_category.film.title|path_to_image %}" alt="{{film_and_category.film.title}}">
-                  <p class="film-title">{{film_and_category.film.title}}</p>
-                  <p class="film-category">{{film_and_category.category}}</p>
-                  <p class="film-description">{{film_and_category.film.description}}</p>
-                </div>
+{% endblock header %}
+
+{% block content %}
+  <section class="film-categories-nav">
+    <div class="container">
+      <ul class="nav justify-content-center rounded-pill bg-primary-subtle">
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="{% url 'film_list' %}">All DVDs</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Action</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Comedy</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Drama</a>
+        </li>
+      </ul>
+    </div>
+  </section>
+  <section class="featured-films">
+    <h2>Featured Films</h2>
+    <div id="featuredFilmsCarousel" class="carousel slide mt-2" data-bs-ride="carousel">
+      <div class="carousel-inner">
+        {% for film_and_category in featured_films %}
+          {% if forloop.counter0 == 0 %} <!-- forloop.counter0 enumerates items in featured_films from 0 -->
+            <div class="carousel-item active">
+              <div class="featured-film">
+                <img src="{% static film_and_category.film.title|path_to_image %}" alt="{{film_and_category.film.title}}">
+                <p class="film-title">{{film_and_category.film.title}}</p>
+                <p class="film-category">{{film_and_category.category}}</p>
+                <p class="film-description">{{film_and_category.film.description}}</p>
               </div>
-            {% else %}
-              <div class="carousel-item">
-                 <div class="featured-film">
-                  <img src="{% static film_and_category.film.title|path_to_image %}" alt="{{film_and_category.film.title}}">
-                  <p class="film-title">{{film_and_category.film.title}}</p>
-                  <p class="film-category">{{film_and_category.category}}</p>
-                  <p class="film-description">{{film_and_category.film.description}}</p>
-                </div>
+            </div>
+          {% else %}
+            <div class="carousel-item">
+               <div class="featured-film">
+                <img src="{% static film_and_category.film.title|path_to_image %}" alt="{{film_and_category.film.title}}">
+                <p class="film-title">{{film_and_category.film.title}}</p>
+                <p class="film-category">{{film_and_category.category}}</p>
+                <p class="film-description">{{film_and_category.film.description}}</p>
               </div>
-            {% endif %}
-          {% endfor %}
-        </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#featuredFilmsCarousel" data-bs-slide="prev">
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#featuredFilmsCarousel" data-bs-slide="next">
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Next</span>
-        </button>
+            </div>
+          {% endif %}
+        {% endfor %}
       </div>
-    </section>
-  </main>
+      <button class="carousel-control-prev" type="button" data-bs-target="#featuredFilmsCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#featuredFilmsCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+  </section>
 {% endblock content %}

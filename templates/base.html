@@ -16,8 +16,11 @@
   <!-- Bootstrap css CDN -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
 
-  <!-- local css file  -->
+  <!-- local css files  -->
   <link rel="stylesheet" href="{% static 'css/base.css' %}" type="text/css">
+  {% block more_css %}
+    {# put additional css files here #}
+  {% endblock more_css %}
 </head>
 <body>
   <!-- navbar -->
@@ -48,9 +51,14 @@
       </div>
     </div>
   </nav>
-  {% block content %}
-    <!-- put your content here -->
-  {% endblock content %}
+  {% block header %}
+    {# if necessary put your header content here #}
+  {% endblock header %}
+  <main>
+    {% block content %}
+     {# put your main content here #}
+    {% endblock content %}
+  </main>
   <footer>
     <p>Designed by <a href="mailto:capiedrav@gmail.com">capiedrav</a> - All rights reserved &copy</p>
   </footer>

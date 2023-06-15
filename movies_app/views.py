@@ -49,6 +49,7 @@ class ActorListView(ListView):
 
     model = Actor
     template_name = "movies_app/actor_list.html"
+    queryset = Actor.objects.all().order_by("last_name", "first_name")
 
 
 class ActorDetailView(DetailView):
@@ -62,11 +63,15 @@ class ActorDetailView(DetailView):
         context = super().get_context_data(**kwargs)
 
         # get all films in which this actor has worked
-        films_of_this_actor = FilmActor.objects.filter(actor=context["actor"])
+        films_of_this_actor = FilmActor.objects.prefetch_related("film").filter(actor=context["actor"]).\
+            order_by("film__title")
+
         context["all_films"] = []
 
         for film in films_of_this_actor:
-            context["all_films"].append(Film.objects.get(pk=film.film_id))
+            context["all_films"].append(film.film)
+
+        # get five more actors to show
+        context["more_actors"] = Actor.objects.exclude(actor_uuid=context["actor"].actor_uuid)[:5]
 
         return context
-

@@ -4,10 +4,12 @@
 
 {% block title %}Actors{% endblock title %}
 
-{% block content %}
-<main>
-  <h1 class="text-center">All Actors</h1>
+{% block more_css %}
   <link rel="stylesheet" type="text/css" href="{% static 'movies_app/css/actor_list.css' %}">
+{% endblock more_css %}
+
+{% block content %}
+  <h1 class="text-center">All Actors</h1>
   <div class="container">
     <div id="actor-list" class="row">
       {% for actor in actor_list %}
@@ -23,7 +25,4 @@
       {% endfor %}
     </div>
   </div>
-</main>
 {% endblock content %}
-
-

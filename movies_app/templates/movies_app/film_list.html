@@ -4,10 +4,12 @@
 
 {% block title %}Films{% endblock title %}
 
+{% block more_css %}
+  <link rel="stylesheet" type="text/css" href="{% static 'movies_app/css/film_list.css' %}">
+{% endblock more_css %}
+
 {% block content %}
-<link rel="stylesheet" type="text/css" href="{% static 'movies_app/css/movies_app.css' %}">
-<main>
-  <h1 class="text-center my-3">All DVDs</h1>
+  <h1 class="text-center">All DVDs</h1>
   {% for film in page_obj %} {# page_obj stores the paginated list of films #}
     <div class="container">
       <div class="row border-bottom py-2">
@@ -38,7 +40,4 @@
       <a href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a>
     {% endif %}
   </div>
-</main>
-
-
 {% endblock content %}

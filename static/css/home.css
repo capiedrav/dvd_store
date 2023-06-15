@@ -1,0 +1,124 @@
+/* styles for home page */
+
+main{
+    background-color: #f8f4f4;
+    padding-top: 20px;
+    border-top: 1px solid lightgray;
+}
+
+h1 {
+    font-size: 3em;
+    font-weight: bold;
+}
+
+.home-header img {
+    max-width: 100%;
+    margin: auto; /* this two properties center the img inside the div */
+    display: block;
+}
+
+.home-header .header-buttons{
+    display: flex;
+    justify-content: right;
+    margin-top: 50px;
+}
+
+.film-categories-nav .nav-item{
+    background-color: dodgerblue;
+    border-radius: 5%;
+    margin: 5px 10px;
+}
+
+.film-categories-nav .nav-link {
+    color: black;
+}
+
+.featured-films {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.featured-films h2{
+    font-weight: bold;
+}
+
+.featured-films .carousel-item {
+    width: 600px;
+    height: 450px;
+}
+
+.featured-film {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.featured-film .film-title {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: blueviolet;
+    margin-bottom: 0;
+}
+
+.featured-film .film-metadata {
+    color: blueviolet;
+}
+
+.featured-film .film-description{
+    text-align: center;
+}
+
+.featured-film img{
+    width: 300px;
+    height: 300px;
+    border-radius: 2%;
+}
+
+/* media queries */
+
+@media screen and (max-width: 992px) { /* styles for large sized screens */
+    .home-header{
+        margin-top: 20px;
+    }
+
+    .home-header .header-img{
+        margin-top: 10px;
+    }
+
+    .home-header .header-buttons {
+        justify-content: center;
+    }
+}
+@media screen and (max-width: 768px) { /* styles for medium sized screens */
+    .featured-film {
+        font-size: 1em;
+    }
+
+    .featured-film .film-title{
+        font-size: 1.2em;
+    }
+}
+
+
+@media screen and (max-width: 576px) { /* styles for small sized screens */
+    .featured-film {
+        font-size: 0.9em;
+    }
+
+    .featured-film .film-title{
+        font-size: 1.2em;
+    }
+
+    .featured-films .carousel-item {
+        width: 100%;
+        height: 100%;
+    }
+
+    .featured-film img {
+        width: 200px;
+        height: 200px;
+    }
+}

@@ -1,6 +1,4 @@
-main{
-    margin-top: 30px;
-}
+/* styles for film details page */
 
 #film-poster{
     display: flex;
@@ -13,6 +11,7 @@ main{
     max-width: 90%;
     border-radius: 2%;
     max-height: 400px;
+    margin-bottom: 10px;
 }
 
 #film-poster h2{
@@ -54,6 +53,11 @@ main{
     height: 75px;
     border-radius: 50%;
     border: 1px solid black;
+}
+
+#starring-actors li{
+    width: 160px;
+    height: 100px;
 }
 
 #starring-actors a{
@@ -113,7 +117,7 @@ main{
     }
 
     #starring-actors ul{
-        justify-content: space-around;
+        justify-content: space-between;
     }
     #suggested-films li{
         width: 270px;

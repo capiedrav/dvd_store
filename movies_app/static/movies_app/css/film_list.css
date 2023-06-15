@@ -1,3 +1,5 @@
+/* styles for film list page */
+
 .film_posters {
     width: 170px;
     height: 170px;
@@ -33,7 +35,6 @@
 }
 
 /* media queries */
-
 @media screen and (max-width: 576px) {
     .film-text{
         text-align: center;
