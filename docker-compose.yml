@@ -11,9 +11,8 @@ services:
     volumes:
       - .:/dvd_store
 
-    environment:
-       - "DJANGO_SECRET_KEY=django-insecure-lab3ykbd@!o5j-#cgdt$$fz^#xzqyxo(i2w4aqbu91ves6*-gnb"
-       - "DJANGO_DEBUG=True"
+    env_file:
+      - .env-vars
 
     networks:
       - app-net
@@ -29,8 +28,8 @@ services:
     ports:
       - "3306:3306"
 
-    environment:
-      - "MYSQL_ROOT_PASSWORD=unodostres"
+    env_file:
+      - .env-vars
 
     volumes:
       - mysql_volume:/var/lib/mysql
