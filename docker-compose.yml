@@ -1,15 +1,9 @@
 version: "3.7"
 
 services:
-  dvd_store-web:
+  dvd_store_web:
 
     build: .
-
-    ports:
-      - "8000:8000"
-
-    volumes:
-      - .:/dvd_store
 
     env_file:
       - .env-vars
@@ -20,7 +14,8 @@ services:
     depends_on:
       - db
 
-    command: python /dvd_store/manage.py runserver 0.0.0.0:8000
+    container_name: "dvd_store_web"
+
 
   db:
     image: db_dvd_store
@@ -37,17 +32,23 @@ services:
     networks:
       - app-net
 
-  phpmyadmin:
-    image: phpmyadmin
-    ports:
-      - "8080:80"
-    environment:
-      - "PMA_HOST=db"
+    container_name: "dvd_store_db"
+
+
+  nginx:
+    # location of nginx's Dockerfile
+    build: ./project_config/nginx
+
+    volumes:
+      - ./staticfiles:/var/www/dvd_store/static/
+
+    depends_on:
+      - "dvd_store_web"
+
     networks:
       - app-net
 
-    depends_on:
-      - db
+    container_name: "dvd_store_nginx"
 
 volumes:
   mysql_volume:

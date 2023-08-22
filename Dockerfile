@@ -12,8 +12,14 @@ WORKDIR /dvd_store
 COPY Pipfile Pipfile.lock /dvd_store/
 RUN pip install pipenv && pipenv install --system
 
-# expose default port for Django build-in server
+RUN mkdir -pv /var/log/gunicorn /var/run/gunicorn /var/www/dvd_store/static
+
+# expose port for gunicorn
 EXPOSE 8000
+
+# commands to start the container
+CMD ["-c", "./project_config/gunicorn.py"]
+ENTRYPOINT ["gunicorn"]
 
 # copy project files
 COPY . .
