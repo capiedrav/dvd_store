@@ -36,7 +36,8 @@ def path_to_image(image_name, film_poster=True):
     :return: path to the image
     """
 
-    image_path = os.path.join(settings.BASE_DIR, "movies_app/static/movies_app/images/")
+    # image_path changes in production branch
+    image_path = os.path.join(settings.BASE_DIR, "staticfiles/movies_app/images/")
 
     if film_poster:
         image_path += "film_posters/" + image_name + "/"
@@ -46,11 +47,11 @@ def path_to_image(image_name, film_poster=True):
     try:
         files = os.listdir(image_path)
     except FileNotFoundError:
-        image_path = os.path.join(settings.BASE_DIR, "movies_app/static/movies_app/images/No-image-found.jpg")
+        image_path = os.path.join(settings.BASE_DIR, "staticfiles/movies_app/images/No-image-found.jpg")
     else:
         if len(files) == 1:
             image_path += files[0]
         else:
-            image_path = os.path.join(settings.BASE_DIR, "movies_app/static/movies_app/images/No-image-found.jpg")
-
-    return image_path.split("static/")[1] # return the relative path to the image
+            image_path = os.path.join(settings.BASE_DIR, "staticfiles/movies_app/images/No-image-found.jpg")
+    
+    return image_path.split("staticfiles/")[1] # return the relative path to the image

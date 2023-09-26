@@ -9,16 +9,18 @@ services:
       - .env-vars
 
     networks:
-      - app-net
+      - cloudflare-net
 
     depends_on:
       - db
-
+       
+    restart: unless-stopped
+    
     container_name: "dvd_store_web"
 
 
   db:
-    image: db_dvd_store
+    image: capiedrav/db_dvd_store:v1
 
     ports:
       - "3306:3306"
@@ -27,10 +29,13 @@ services:
       - .env-vars
 
     volumes:
-      - mysql_volume:/var/lib/mysql
+      - db_dvd_store_volume:/var/lib/mysql
 
     networks:
-      - app-net
+      - cloudflare-net
+
+
+    restart: unless-stopped
 
     container_name: "dvd_store_db"
 
@@ -46,16 +51,34 @@ services:
       - "dvd_store_web"
 
     networks:
-      - app-net
-
+      - cloudflare-net
+    
+    restart: unless-stopped
+    
     container_name: "dvd_store_nginx"
 
+  
+  cloudflare_tunnel:
+    image: cloudflare/cloudflared:1449-569a7c3c9ed0
+    
+    env_file: .env-vars
+    
+    restart: unless-stopped
+    
+    command: tunnel --no-autoupdate run
+    
+    networks:
+      - cloudflare-net
+
+    container_name: "dvd_store_cloudflare_tunnel"
+
+
 volumes:
-  mysql_volume:
+  db_dvd_store_volume:
     external: true
 
 networks:
-  app-net:
-    external:
-      name: nat
+  cloudflare-net:
+    external: true
+      
 

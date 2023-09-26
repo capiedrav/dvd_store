@@ -293,5 +293,8 @@ docker-compose-prod.yml
 # ignore staticfiles folder
 staticfiles
 
+#ignore db_backup folder
+db_backup
+
 # End of https://www.toptal.com/developers/gitignore/api/pycharm,django
 
