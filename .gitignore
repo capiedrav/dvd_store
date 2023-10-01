@@ -284,5 +284,9 @@ fabric.properties
 # ignore static files in movies_app (added by capiedrav)
 movies_app/static/movies_app/images
 
+# added by capiedrav
+.env-vars
+db_backup
+staticfiles
 # End of https://www.toptal.com/developers/gitignore/api/pycharm,django
 
