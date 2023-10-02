@@ -285,7 +285,7 @@ fabric.properties
 movies_app/static/movies_app/images
 
 # added by capiedrav
-.env-vars
+.env-vars*
 db_backup
 staticfiles
 # End of https://www.toptal.com/developers/gitignore/api/pycharm,django
