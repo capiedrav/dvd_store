@@ -41,8 +41,8 @@ services:
     image: phpmyadmin
     ports:
       - "8080:80"
-    environment:
-      - "PMA_HOST=db"
+    env_file:
+      - .env-vars
     networks:
       - app-net
 

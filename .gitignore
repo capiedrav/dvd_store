@@ -284,11 +284,10 @@ fabric.properties
 # ignore images in movies_app folder
 movies_app/static/movies_app/images
 
-# ignore docker-compose file for production
-docker-compose-prod.yml
-
-# ignore environment variables file
-.env-vars
+# added by capiedrav
+.env-vars*
+db_backup
+staticfiles
 
 # End of https://www.toptal.com/developers/gitignore/api/pycharm,django
 
