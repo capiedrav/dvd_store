@@ -6,7 +6,7 @@ services:
     build: .
 
     env_file:
-      - .env-vars
+      - .env-vars-prod
 
     networks:
       - cloudflare-net
@@ -18,15 +18,14 @@ services:
     
     container_name: "dvd_store_web"
 
-
   db:
     image: capiedrav/db_dvd_store:v1
 
-    ports:
-      - "3306:3306"
+#    ports:
+#      - "3306:3306"
 
     env_file:
-      - .env-vars
+      - .env-vars-prod
 
     volumes:
       - db_dvd_store_volume:/var/lib/mysql
@@ -34,11 +33,9 @@ services:
     networks:
       - cloudflare-net
 
-
     restart: unless-stopped
 
     container_name: "dvd_store_db"
-
 
   nginx:
     # location of nginx's Dockerfile
@@ -56,13 +53,12 @@ services:
     restart: unless-stopped
     
     container_name: "dvd_store_nginx"
-
   
   cloudflare_tunnel:
     image: cloudflare/cloudflared:1449-569a7c3c9ed0
     
-    env_file: .env-vars
-    
+    env_file: .env-vars-prod
+
     restart: unless-stopped
     
     command: tunnel --no-autoupdate run
@@ -71,7 +67,6 @@ services:
       - cloudflare-net
 
     container_name: "dvd_store_cloudflare_tunnel"
-
 
 volumes:
   db_dvd_store_volume:

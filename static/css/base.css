@@ -20,3 +20,10 @@ footer {
     background-color: #cfe2ff;
     padding-top: 10px;
 }
+
+.form-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px;
+}
