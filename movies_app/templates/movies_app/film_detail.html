@@ -48,14 +48,14 @@
         <div id="film-available">
           {% if user.is_authenticated %}
             {% if film_availability %}
-              <p>This film is available for rental</p>
-              <p><a class="btn btn-primary rounded-pill" href="{% url 'film_rental' film.film_uuid %}">Rent</a></p>
+              <p class="fs-4"><span class="badge text-bg-success">This film is available for rental</span></p>
+              <p><a class="btn btn-primary" href="{% url 'film_rental' film.film_uuid %}">Rent Now!!</a></p>
             {% else %}
-              <p>This film is not available for rental</p>
+              <p class="fs-4"><span class="badge bg-danger">This film is not available for rental</span></p>
             {% endif %}
           {% else %}
             {# by adding ?next={{ request.path }} to the login url,  the user is returned to this page after successful login #}
-            <p>Please <a class="btn btn-primary rounded-pill" href="{% url 'account_login' %}?next={{ request.path }}">log in</a> to see film availability</p>
+            <p>Please, <a class="btn btn-primary" href="{% url 'account_login' %}?next={{ request.path }}">log in</a> to see film availability</p>
           {% endif %}
         </div>
       </div>
