@@ -1,5 +1,5 @@
 from django.test import TestCase
-from .models import Language, Film, Actor
+from .models import Language, Film, Actor, FilmCategory, Category
 from .views import FilmListView, FilmDetailView, ActorListView, ActorDetailView
 from django.urls import reverse
 
@@ -58,6 +58,12 @@ class FilmTests(TestCase):
             replacement_cost=19.99,
             rating="R"
         )
+
+        # Assign categories to both films
+        category_classics = Category.objects.create(name="Classics")
+        category_action = Category.objects.create(name="Action")
+        FilmCategory.objects.create(film=Film.objects.get(title="Gone with the Wind"), category=category_classics)
+        FilmCategory.objects.create(film=Film.objects.get(title="The Matrix"), category=category_action)
 
     def test_films_in_the_database(self):
 
