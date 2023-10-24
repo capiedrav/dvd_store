@@ -55,7 +55,7 @@
             {% endif %}
           {% else %}
             {# by adding ?next={{ request.path }} to the login url,  the user is returned to this page after successful login #}
-            <p>Please, <a class="btn btn-primary" href="{% url 'account_login' %}?next={{ request.path }}">log in</a> to see film availability</p>
+            <p>Please <a class="btn btn-primary" href="{% url 'account_login' %}?next={{ request.path }}">log in</a> to see film availability</p>
           {% endif %}
         </div>
       </div>

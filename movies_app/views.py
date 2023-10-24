@@ -1,16 +1,58 @@
 from django.views.generic import ListView, DetailView
+from django.urls import reverse
 from django.shortcuts import get_object_or_404
 from .models import Film, Actor, FilmActor, FilmCategory
+from .utils import get_films_by_category
 from store_app.models import Inventory, Customer
 
 
 # Create your views here.
 class FilmListView(ListView):
+    """
+    List of all films
+    """
 
     model = Film
     template_name = "movies_app/film_list.html"
     paginate_by = 50 # display 50 items at a time
     queryset = Film.objects.select_related("filmcategory").all().order_by("title")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["list_title"] = "All DVDs"
+
+        return context
+
+
+class FilmsByCategoryListView(ListView):
+
+    model = Film
+    template_name = "movies_app/film_list.html"
+    paginate_by = 50
+
+    def get_queryset(self):
+
+        films_by_category = []
+        if self.request.path == reverse("action_film_list"):
+            films_by_category = get_films_by_category("Action") # get all action films
+        elif self.request.path == reverse("comedy_film_list"):
+            films_by_category = get_films_by_category("Comedy") # get all comedy films
+        elif self.request.path == reverse("drama_film_list"):
+            films_by_category = get_films_by_category("Drama") # get all drama films
+
+        return films_by_category
+
+    def get_context_data(self, **kwargs):
+
+        context = super().get_context_data(**kwargs)
+        if self.request.path == reverse("action_film_list"):
+            context["list_title"] = "Action DVDs"
+        elif self.request.path == reverse("comedy_film_list"):
+            context["list_title"] = "Comedy DVDs"
+        elif self.request.path == reverse("drama_film_list"):
+            context["list_title"] = "Drama DVDs"
+
+        return context
 
 
 class FilmDetailView(DetailView):

@@ -9,7 +9,7 @@
 {% endblock more_css %}
 
 {% block content %}
-  <h1 class="text-center">All DVDs</h1>
+  <h1 class="text-center">{{ list_title }}</h1>
   {% for film in page_obj %} {# page_obj stores the paginated list of films #}
     <div class="container">
       <div class="row border-bottom py-2">
