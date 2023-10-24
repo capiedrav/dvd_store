@@ -1,6 +1,6 @@
 from django.views.generic import ListView, DetailView
 from django.shortcuts import get_object_or_404
-from .models import Film, Actor, FilmActor
+from .models import Film, Actor, FilmActor, FilmCategory
 from store_app.models import Inventory, Customer
 
 
@@ -23,15 +23,17 @@ class FilmDetailView(DetailView):
 
         context = super().get_context_data(**kwargs)
 
+        # get all actors working in this film
         film_actors = FilmActor.objects.filter(film=context["film"]).prefetch_related("actor")
-        context["all_actors"] = []
+        # put the actors in the context variable
+        context["all_actors"] = [film_actor.actor for film_actor in film_actors]
 
-        for film_actor in film_actors:
-            context["all_actors"].append(film_actor.actor)
-
-        # get five films to suggest to the user
-        context["suggested_films"] = Film.objects.select_related("filmcategory").exclude(
-            title=context["film"].title)[:5]
+        # get five films on the same category of the original film
+        films_same_category = FilmCategory.objects.select_related("film").\
+            filter(category__name=context["film"].filmcategory.category.name).\
+            exclude(film__title=context["film"].title)[:5]
+        # put the five films in the context variable
+        context["suggested_films"] = [same_category.film for same_category in films_same_category]
 
         # check whether the film is available for rental
         if self.request.user.is_authenticated:
