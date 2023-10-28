@@ -63,17 +63,3 @@ def remove_duplicate_actor_images():
             image_to_remove = os.path.join(actor_path, actor_images[-1])
             print(f"Removing {image_to_remove}")
             os.remove(image_to_remove)
-
-
-def get_films_by_category(category):
-    """
-    Retrieves all films in category. This function is used in FilmsByCategoryListView.
-
-    :param category (string): film category
-    :return: queryset of all films in category
-    """
-
-    films_in_category = FilmCategory.objects.select_related("film").filter(category__name=category).\
-        order_by("film__title")
-
-    return [film_in_category.film for film_in_category in films_in_category]
