@@ -91,7 +91,7 @@ WSGI_APPLICATION = 'project_config.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 DATABASES = {
-    "default": env.dj_db_url("DATABASE_URL", default="mysql://root:unodostres@db:3306/sakila")
+    "default": env.dj_db_url("DATABASE_URL")
 }
 
 # Password validation

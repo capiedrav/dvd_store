@@ -1,5 +1,5 @@
 from django.views.generic import TemplateView
-from movies_app.models import FilmCategory
+from movies_app.models import FilmCategory, Category
 
 
 # Create your views here.
@@ -11,17 +11,16 @@ class HomePageView(TemplateView):
 
         context = super().get_context_data(**kwargs)
 
-        # to avoid querying the database, hardcode the ids for each category in the category table
-        ACTION = 1
-        COMEDY = 2
-        DRAMA = 3
+        film_categories = Category.objects.all() # get all film categories
 
         featured_films = []
-        for category in [ACTION, COMEDY, DRAMA]: # get two films for each category
-            for film_and_category in FilmCategory.objects.filter(category=category)[:2]:
-                featured_films.append(film_and_category)
+        for category in film_categories: # for each film category
+            # get two films for each category
+            for film_category in FilmCategory.objects.select_related("film").filter(category=category)[:2]:
+                featured_films.append(film_category)
 
         context["featured_films"] = featured_films
+        context["film_categories"] = film_categories
 
         return context
 
