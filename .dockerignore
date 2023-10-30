@@ -76,7 +76,7 @@ target/
 .env
 .venv/
 venv/
-.env-vars
+.env-vars*
 
 # PyCharm
 .idea
@@ -93,4 +93,4 @@ venv/
 
 # added by capiedrav
 mysql_database
-
+db_backup
