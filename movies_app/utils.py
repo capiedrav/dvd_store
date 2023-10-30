@@ -1,15 +1,14 @@
 import os
 from django.conf import settings
 from bing_image_downloader import downloader
-from movies_app.models import Film, Actor
-
-"""
-Run these functions from the Django shell: 
-python manage.py shell
-"""
+from movies_app.models import Film, Actor, FilmCategory
 
 
 def get_film_posters_from_internet():
+    """
+    Run this function from the Django shell:
+    python manage.py shell
+    """
 
     films = Film.objects.all()
     output_dir = os.path.join(settings.BASE_DIR, "movies_app/static/movies_app/images/film_posters")
@@ -25,6 +24,10 @@ def get_film_posters_from_internet():
 
 
 def get_actor_images_from_internet():
+    """
+    Run this function from the Django shell:
+    python manage.py shell
+    """
 
     actors = Actor.objects.all()
     output_dir = os.path.join(settings.BASE_DIR, "movies_app/static/movies_app/images/actor_images")
@@ -41,6 +44,10 @@ def get_actor_images_from_internet():
 
 
 def remove_duplicate_actor_images():
+    """
+    Run this function from the Django shell:
+    python manage.py shell
+    """
 
     path = os.path.join(settings.BASE_DIR, "movies_app/static/movies_app/images/actor_images")
 

@@ -6,11 +6,41 @@ from store_app.models import Inventory, Customer
 
 # Create your views here.
 class FilmListView(ListView):
+    """
+    List of all films
+    """
 
     model = Film
     template_name = "movies_app/film_list.html"
     paginate_by = 50 # display 50 items at a time
     queryset = Film.objects.select_related("filmcategory").all().order_by("title")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["list_title"] = "All DVDs"
+
+        return context
+
+
+class FilmsByCategoryListView(ListView):
+
+    model = Film
+    template_name = "movies_app/film_list.html"
+    paginate_by = 50
+
+    def get_queryset(self):
+        # get all films in a given category
+        films_in_category = FilmCategory.objects.select_related("film").\
+                            filter(category__name=self.kwargs["film_category"]).order_by("film__title")
+
+        return [film_in_category.film for film_in_category in films_in_category]
+
+    def get_context_data(self, **kwargs):
+
+        context = super().get_context_data(**kwargs)
+        context["list_title"] = self.kwargs["film_category"].title() + " DVDs"
+
+        return context
 
 
 class FilmDetailView(DetailView):
