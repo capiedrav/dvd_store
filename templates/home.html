@@ -51,7 +51,9 @@
           {% if forloop.counter0 == 0 %} {# forloop.counter0 enumerates items in featured_films from 0 #}
             <div class="carousel-item active">
               <div class="featured-film">
-                <img src="{% static film_and_category.film.title|path_to_image %}" alt="{{film_and_category.film.title}}">
+                <a href="{{film_and_category.film.get_absolute_url}}">
+                  <img src="{% static film_and_category.film.title|path_to_image %}" alt="{{film_and_category.film.title}}">
+                </a>
                 <p class="film-title">{{film_and_category.film.title}}</p>
                 <p class="film-category">{{film_and_category.category}}</p>
                 <p class="film-description">{{film_and_category.film.description}}</p>
@@ -59,8 +61,10 @@
             </div>
           {% else %}
             <div class="carousel-item">
-               <div class="featured-film">
-                <img src="{% static film_and_category.film.title|path_to_image %}" alt="{{film_and_category.film.title}}">
+              <div class="featured-film">
+                <a href="{{film_and_category.film.get_absolute_url}}">
+                 <img src="{% static film_and_category.film.title|path_to_image %}" alt="{{film_and_category.film.title}}">
+                </a>
                 <p class="film-title">{{film_and_category.film.title}}</p>
                 <p class="film-category">{{film_and_category.category}}</p>
                 <p class="film-description">{{film_and_category.film.description}}</p>
