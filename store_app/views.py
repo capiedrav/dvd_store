@@ -5,6 +5,7 @@ from django.utils import timezone
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.http import Http404
+from django.db import transaction
 from .models import Inventory, Rental, Payment, Customer
 from movies_app.models import Film
 from .forms import UpdateCustomerStoreForm, UpdatePersonalInfoForm, UpdateCustomerAddressForm
@@ -17,42 +18,45 @@ def film_rental_view(request, pk):
     # check film inventory
     film_requested = get_object_or_404(Film, film_uuid=pk)
     customer = get_object_or_404(Customer, personal_info=request.user)  # get the customer trying to rent the film
-    # a film is available for rental if it is available in the same store of the customer
-    film_inventory = [film for film in Inventory.objects.filter(film=film_requested) if film.available
-                      and film.store == customer.store]
-    film_available = len(film_inventory) > 0
+    with transaction.atomic(): # all database queries from here on run inside a transaction
+        # a film is available for rental if it is available in the same store of the customer
+        # select_for_update puts a lock on the QuerySet to prevent a race condition with a concurrent query
+        film_inventory = [film for film in Inventory.objects.select_for_update().filter(film=film_requested)
+                          if film.available and film.store == customer.store]
+        film_available = len(film_inventory) > 0
 
-    if request.method == "POST": # in case of a POST request, i.e. form's button was pressed
+        if request.method == "POST": # in case of a POST request, i.e. form's button was pressed
 
-        if not film_available: # raise error in case the film is not available for rental (this should never happen)
-            raise Http404
+            if not film_available: # raise error in case the film is not available for rental (this should never happen)
+                raise Http404
 
-        film_for_rental = film_inventory[0] # grab first film available
-        film_for_rental.available = False  # mark it as no longer available
-        film_for_rental.save(update_fields=["available", ])
+            film_for_rental = film_inventory[0] # grab first film available
+            film_for_rental.available = False  # mark it as no longer available
+            film_for_rental.save(update_fields=["available", ])
 
-        # calculate return date based on rental_date and the rental duration of the film
-        rental_date = timezone.datetime.today()
-        return_date = rental_date + timezone.timedelta(days=film_requested.rental_duration)
+            # calculate return date based on rental_date and the rental duration of the film
+            rental_date = timezone.datetime.today()
+            return_date = rental_date + timezone.timedelta(days=film_requested.rental_duration)
 
-        # get customer and staff info
-        # customer = get_object_or_404(Customer, personal_info=request.user)
-        staff = film_for_rental.store.manager_staff
+            # get customer and staff info
+            # customer = get_object_or_404(Customer, personal_info=request.user)
+            staff = film_for_rental.store.manager_staff
 
-        # create new rental record
-        new_film_rental = Rental(customer=customer, inventory=film_for_rental, staff=staff, rental_date=rental_date,
-                                 return_date=return_date)
-        new_film_rental.save()
+            # create new rental record
+            new_film_rental = Rental(customer=customer, inventory=film_for_rental, staff=staff, rental_date=rental_date,
+                                     return_date=return_date)
+            new_film_rental.save()
 
-        # create new payment record
-        new_payment = Payment(customer=customer, staff=staff, rental=new_film_rental,
-                              amount=film_requested.rental_rate, payment_date=rental_date)
-        new_payment.save()
+            # create new payment record
+            new_payment = Payment(customer=customer, staff=staff, rental=new_film_rental,
+                                  amount=film_requested.rental_rate, payment_date=rental_date)
+            new_payment.save()
 
-        return redirect(new_payment) # redirect to payment details page
+            return redirect(new_payment) # redirect to payment details page
 
-    else: # in case of GET request, display the film rental page
-        return render(request, "store_app/film_rental.html", {"film": film_requested, "film_available": film_available})
+        else: # in case of GET request, display the film rental page
+            return render(request, "store_app/film_rental.html", {"film": film_requested,
+                                                                  "film_available": film_available})
 
 
 class FilmPaymentView(LoginRequiredMixin, DetailView):
