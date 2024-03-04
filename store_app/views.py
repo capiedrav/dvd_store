@@ -84,7 +84,7 @@ class CustomerProfileView(LoginRequiredMixin, DetailView):
         context = super().get_context_data(**kwargs)
 
         # all film rentals ordered by most recent rental date
-        context["rentals"] = Rental.objects.filter(customer=self.request.user.customer).order_by("-rental_date")
+        context["rentals"] = Rental.objects.select_related("inventory").filter(customer=self.request.user.customer).order_by("-rental_date")
 
         return context
 

@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 {% load movies_app_filters_and_tags %}
+{% load store_app_filters_and_tags %}
 
 {% block title %}Profile of {{ user.username }} - DVD Store{% endblock title %}
 
@@ -37,6 +38,10 @@
           </h3>
           <p><span class="rental-details">Rental date:</span> {{rental.rental_date}}</p>
           <p><span class="rental-details">Return date:</span> {{rental.return_date}}</p>
+          {# check_return_date is a filter defined in store_app_filters_and_tags #}
+          {% if rental|check_return_date %}
+            <p class="fs-4"><span class="badge bg-danger">This DVD has not been returned</span></p>
+          {% endif %}
         </div>
       </div>
       {% endfor %}
