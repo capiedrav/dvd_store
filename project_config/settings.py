@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     "crispy_forms",
     "allauth", # these belong to django-allauth package
     "allauth.account",
+    "django_recaptcha",
 
     # local apps
     "accounts_app.apps.AccountsAppConfig",
@@ -167,7 +168,14 @@ ACCOUNT_UNIQUE_EMAIL = True
 DEFAULT_FROM_EMAIL = "admin@dvdstore.com"
 ACCOUNT_FORMS = {
     "signup": "accounts_app.forms.CustomSignupForm",
+    "login": "accounts_app.forms.CustomLoginForm",
 }
+
+# django-recaptcha settings (using reCAPTCHA V3)
+RECAPTCHA_PUBLIC_KEY = env("DJANGO_RECAPTCHA_PUBLIC_KEY")
+RECAPTCHA_PRIVATE_KEY = env("DJANGO_RECAPTCHA_PRIVATE_KEY")
+RECAPTCHA_REQUIRED_SCORE = 0.85 # reCAPTCHA V3 Score, In the event the score does not meet the requirements,
+                                # the field validation will fail as expected and an error message will be logged
 
 # the default values of the following variables apply for "production"
 # the values for "development" are defined in ".env-vars" file

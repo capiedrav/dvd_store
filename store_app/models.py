@@ -89,7 +89,7 @@ class Staff(models.Model):
         verbose_name_plural = "Staff"
 
     def __str__(self):
-        return self.personal_info.first_name + " " + self.personal_info.last_name
+        return self.personal_info.username
 
 
 class Customer(models.Model):
@@ -114,7 +114,7 @@ class Customer(models.Model):
         return reverse("customer_profile", args=[str(self.personal_info.user_uuid)])
 
     def __str__(self):
-        return self.personal_info.first_name + " " + self.personal_info.last_name
+        return self.personal_info.username
 
 
 class Inventory(models.Model):
@@ -131,7 +131,7 @@ class Inventory(models.Model):
         verbose_name_plural = "Inventory"
 
     def __str__(self):
-        return "Inventory #" + str(self.inventory_id)
+        return f"{self.inventory_id} - {self.film.title}"
 
 
 class Rental(models.Model):
